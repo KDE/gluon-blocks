@@ -9,7 +9,7 @@ class Mainwindow : public KXmlGuiWindow
 {
 public:
     Mainwindow(QWidget * parent=0);
-
+~Mainwindow(){delete m_engine;}
 void mousePressEvent(QMouseEvent * event);
     private:
     BlokEngine * m_engine;

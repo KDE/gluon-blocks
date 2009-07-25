@@ -45,7 +45,7 @@ m_engine->addItem(test);
     
         KGLPhysicsItem * totem = new KGLPhysicsItem;
    totem->setTexture("sprites/totem1.png");
-    totem->createBox(2,2);
+    totem->createBox(1.5,1.5);
     totem->setPosition(3,6);
     
     m_engine->addItem(totem);

@@ -3,8 +3,10 @@
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     :KGLPhysicsEngine(parent)
 {
-    m_soundEngine = new KALEngine;
-    m_musicSource =  new KALSource(KALBuffer("sounds/sober.ogg"),m_soundEngine);
+   KALEngine::getInstance();
+
+    m_musicSource =  new KALSource("sounds/sober.ogg");
+    m_fallSource =   new KALSource("sounds/bonebounce.ogg");
     m_musicSource->loop(true);
     m_musicSource->play();
     m_bkPic = "sprites/back.png";
@@ -25,12 +27,14 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     addItem(m_ground);
     
 
+
     
 }
 
 BlokEngine::~BlokEngine()
 {
-    delete m_soundEngine;
+   KALEngine::kill();
+
 }
 void BlokEngine::setBkGround()
 {
@@ -88,3 +92,4 @@ KGLPhysicsEngine::mainLoop(ff);
   
   
 }
+

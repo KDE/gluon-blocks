@@ -11,6 +11,7 @@
 
 class BlokEngine : public KGLPhysicsEngine
 {
+  Q_OBJECT
 public:
     BlokEngine(KGLPhysicsEngine * parent=0);
     ~BlokEngine();
@@ -29,8 +30,11 @@ void addFlower(const float &x);
     KGLBoxItem * cloud;
 
 
-        KALEngine * m_soundEngine;
+
+
+
         KALSource * m_musicSource;
+ KALSource * m_fallSource;
 
         };
 
