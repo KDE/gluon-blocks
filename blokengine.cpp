@@ -43,7 +43,7 @@ void BlokEngine::setBkGround()
     m_bkground->setZIndex(LAYER_0);
 
     cloud = new KGLBoxItem(20, 10);
-    cloud->setTexture("sprites/cloud2.png");
+    cloud->setTexture("sprites/cloud.png");
     cloud->setZIndex(LAYER_1);
     cloud->setPosition(-10, 0);
     cloud->updateTransform();
