@@ -41,11 +41,11 @@ Mainwindow::Mainwindow(QWidget * parent)
     m_engine->addItem(roof);
 
 
-    KGLPhysicsItem * totem = new KGLPhysicsItem;
+    BlokItem * totem = new BlokItem;
     totem->setTexture("sprites/totem1.png");
     totem->createBox(1.5, 1.5);
     totem->setPosition(3, 6);
-
+    totem->setBlokType(BlokItem::Totem);
     m_engine->addItem(totem);
 
 
@@ -75,10 +75,11 @@ void Mainwindow::mousePressEvent(QMouseEvent * event)
         kDebug() << "NULL";
         return;
     } else {
-
         kDebug() << "yes";
-        m_engine->removeItem(item);
 
+        BlokItem * blok = dynamic_cast<BlokItem*>(item);
+        if (blok == NULL || (blok != NULL && blok->blokType() == BlokItem::Standard))
+            m_engine->removeItem(item);
     }
 
 

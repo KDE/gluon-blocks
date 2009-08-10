@@ -21,3 +21,13 @@ setTexture(m_texPic);
 void BlokItem::drop()
 {
 }
+
+void BlokItem::setBlokType(ItemType newType)
+{
+    m_blokType = newType;
+}
+
+BlokItem::ItemType BlokItem::blokType()
+{
+    return m_blokType;
+}
