@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
 
 
 
-Mainwindow * main = new Mainwindow;
+    Mainwindow * main = new Mainwindow;
 
 
-main->show();
+    main->show();
 
 
- app.exec();
+    app.exec();
 
 }

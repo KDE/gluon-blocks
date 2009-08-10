@@ -7,12 +7,15 @@ class BlokItem : public KGLPhysicsItem
 {
     Q_OBJECT
 public:
-   BlokItem(float w=1, float=1, KGLEngine * parent=0);
+    BlokItem(float w = 1, float = 1, KGLEngine * parent = 0);
 
-   private:
+private:
    QString m_texPic;
    KALSource * dropSound ;
-KGLParticlesItem * m_partItem;
+   KGLParticlesItem * m_partItem;
+
+public slots:
+    void drop();
 };
 
 #endif // BLOKITEM_H

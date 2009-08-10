@@ -11,15 +11,15 @@
 
 class BlokEngine : public KGLPhysicsEngine
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-    BlokEngine(KGLPhysicsEngine * parent=0);
+    BlokEngine(KGLPhysicsEngine * parent = 0);
     ~BlokEngine();
-void setBkGround();
-void setGround();
-void mainLoop(float ff);
-void addFlower(const float &x);
-    private:
+    void setBkGround();
+    void setGround();
+    void mainLoop(float ff);
+    void addFlower(const float &x);
+private:
     KGLBoxItem * m_bkground;
     KGLPhysicsItem * m_ground;
     QString m_bkPic;
@@ -33,9 +33,9 @@ void addFlower(const float &x);
 KGLParticlesItem  * m_partItem;
 
 
-        KALSource * m_musicSource;
- KALSource * m_fallSource;
+    KALSource * m_musicSource;
+    KALSource * m_fallSource;
 
-        };
+};
 
 #endif // BLOKENGINE_H
