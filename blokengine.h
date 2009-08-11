@@ -30,7 +30,7 @@ void addFlower(const float &x);
     KGLBoxItem * cloud;
 
 
-
+KGLParticlesItem  * m_partItem;
 
 
         KALSource * m_musicSource;

@@ -17,8 +17,8 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground = new KGLPhysicsItem(this);
 
     
-   
-    
+
+
     setBkGround();
     setGround();
     addFlower(-3);
