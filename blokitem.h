@@ -13,6 +13,8 @@ public:
 		Totem = 1
 	};
     BlokItem(float w = 1, float = 1, KGLEngine * parent = 0);
+    ItemType blokType();
+    void setBlokType(ItemType newType);
 
 private:
    ItemType m_blokType;
