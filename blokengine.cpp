@@ -30,9 +30,8 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
 
 BlokEngine::~BlokEngine()
 {
-    KALEngine::kill();
-
 }
+
 void BlokEngine::setBkGround()
 {
 
