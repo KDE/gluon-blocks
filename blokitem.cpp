@@ -12,7 +12,7 @@ setTexture(m_texPic);
 
  m_partItem->createExplose(20,QPixmap());
 
-    dropSound = new KALSource("bounce.ogg");
+    dropSound = new KALSound("bounce.ogg");
 
     connect(this, SIGNAL(collided()), this, SLOT(drop()));
 

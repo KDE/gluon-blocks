@@ -1,5 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+#include <QMouseEvent>
+// QMouseEvent must be included before KXmlGuiWindow because X11 headers
+// (indirectly included by KXMLGuiWindow) define the symbol None, also
+// present in qcoreevent.h
 #include <KXmlGuiWindow>
 #include <gluon/kgl/kglview.h>
 #include "blokengine.h"

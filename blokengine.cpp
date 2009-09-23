@@ -3,11 +3,11 @@
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
         : KGLPhysicsEngine(parent)
 {
-    KALEngine::getInstance();
+    KALEngine::instance();
 
-    m_musicSource =  new KALSource("sounds/sober.ogg");
-    m_fallSource =   new KALSource("sounds/bonebounce.ogg");
-    m_musicSource->loop(true);
+    m_musicSource =  new KALSound("sounds/sober.ogg");
+    m_fallSource =   new KALSound("sounds/bonebounce.ogg");
+    m_musicSource->setLoop(true);
     m_musicSource->play();
     m_bkPic = "sprites/back.png";
     m_gdPic = "sprites/text03.png";

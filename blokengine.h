@@ -2,7 +2,7 @@
 #define BLOKENGINE_H
 #include <gluon/kgl/kglphysicsengine.h>
 #include <gluon/kal/kalengine.h>
-#include <gluon/kal/kalsource.h>
+#include <gluon/kal/kalsound.h>
 #include <gluon/kgl/kglparticlesitem.h>
 #define LAYER_0 0
 #define LAYER_1 1
@@ -33,8 +33,8 @@ private:
 KGLParticlesItem  * m_partItem;
 
 
-    KALSource * m_musicSource;
-    KALSource * m_fallSource;
+    KALSound * m_musicSource;
+    KALSound * m_fallSource;
 
 };
 
