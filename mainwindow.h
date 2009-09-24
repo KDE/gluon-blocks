@@ -7,10 +7,11 @@
 // present in qcoreevent.h
 #include <KXmlGuiWindow>
 #include <gluon/kgl/kglview.h>
+#include <gluon/gluonmainwindow.h>
 #include "blokengine.h"
 #include "blokitem.h"
 
-class Mainwindow : public KXmlGuiWindow
+class Mainwindow : public GluonMainWindow
 {
 public:
     Mainwindow(QWidget * parent = 0);
@@ -20,7 +21,7 @@ public:
     void mousePressEvent(QMouseEvent * event);
 private:
     BlokEngine * m_engine;
-    KGLView * m_view;
+
 };
 
 #endif // MAINWINDOW_H

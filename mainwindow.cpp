@@ -1,25 +1,19 @@
 #include "mainwindow.h"
 
 Mainwindow::Mainwindow(QWidget * parent)
-        : KXmlGuiWindow(parent)
+    : GluonMainWindow(parent)
 {
 
-    m_view = new KGLView(parent);
     m_engine = new BlokEngine();
-    m_view->setEngine(m_engine);
-    setCentralWidget(m_view);
 
+    view()->setEngine(m_engine);
     setMouseTracking(true);
-
-
-
 
     for (int i = 0; i < 5; ++i) {
         BlokItem * test = new BlokItem;
-		test->setPosition(-3, test->position().y());
+        test->setPosition(-3, test->position().y());
         m_engine->addItem(test);
     }
-
 
     for (int i = 0; i < 5; ++i) {
         BlokItem * test = new BlokItem;
@@ -28,8 +22,7 @@ Mainwindow::Mainwindow(QWidget * parent)
 
 
     }
-
-
+    //
     KGLPhysicsItem * roof = new KGLPhysicsItem;
     roof->setTexture("sprites/text02.png");
     roof->texture()->scale(QPointF(6, 1));
@@ -38,7 +31,6 @@ Mainwindow::Mainwindow(QWidget * parent)
 
     m_engine->addItem(roof);
 
-
     BlokItem * totem = new BlokItem;
     totem->setTexture("sprites/totem1.png");
     totem->createBox(1.5, 1.5);
@@ -46,26 +38,17 @@ Mainwindow::Mainwindow(QWidget * parent)
     totem->setBlokType(BlokItem::Totem);
     m_engine->addItem(totem);
 
+    view()->start();
 
-
-
-
-
-
-    m_view->setInfoShow(true);
-    m_view->setAxisShow(true);
-
-    m_view->start();
-    setupGUI();
 
 }
 
 void Mainwindow::mousePressEvent(QMouseEvent * event)
 {
 
-    kDebug() << m_view->mapToGL(event->pos());
+    kDebug() << view()->mapToGL(event->pos());
 
-    QPointF pos = m_view->mapToGL(event->pos());
+    QPointF pos = view()->mapToGL(event->pos());
 
     KGLPhysicsItem * item = m_engine->itemAt(pos) ;
 
