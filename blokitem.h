@@ -17,12 +17,15 @@ public:
     ItemType blokType();
     void setBlokType(ItemType newType);
 
+
 private:
    ItemType m_blokType;
    QString m_texPic;
    KALSound * dropSound ;
    KGLParticlesItem * m_partItem;
 
+   protected:
+   void paintGL();
 public slots:
     void drop();
 };

@@ -1,7 +1,7 @@
 #include "blokengine.h"
 
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
-        : KGLPhysicsEngine(parent)
+    : KGLPhysicsEngine(parent)
 {
     KALEngine::instance();
 
@@ -15,6 +15,9 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_grassPic = "sprites/text05.png";
     m_bkground = new KGLBoxItem(20, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
+
+
+
 
     setBkGround();
     setGround();
@@ -56,7 +59,7 @@ void BlokEngine::setGround()
     m_ground->createBox(20, 1);
     m_ground->setZIndex(LAYER_1);
     m_ground->setTexture(m_gdPic);
-    m_ground->texture()->setScale(QPointF(10, 1));
+    m_ground->texture()->scale(QPoint(1,1));
     m_ground->setPosition(-10, -10);
     m_ground->setStatic();
 

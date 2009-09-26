@@ -7,6 +7,7 @@
 // present in qcoreevent.h
 #include <KXmlGuiWindow>
 #include <gluon/kgl/kglview.h>
+#include <gluon/kgl/kgltextitem.h>
 #include <gluon/gluonmainwindow.h>
 #include "blokengine.h"
 #include "blokitem.h"
