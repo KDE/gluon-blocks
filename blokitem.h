@@ -10,7 +10,8 @@ public:
 	enum ItemType
 	{
 		Standard = 0,
-		Totem = 1
+		Totem = 1,
+		Solid = 2
 	};
     BlokItem(float w = 1, float = 1, KGLEngine * parent = 0);
     ItemType blokType();

@@ -1,7 +1,7 @@
 #include "blokitem.h"
 #include <gluon/kgl/kglboxitem.h>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
-     :KGLPhysicsItem(parent)
+     :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
 
 createBox(w,h);

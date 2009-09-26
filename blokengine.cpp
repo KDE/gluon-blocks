@@ -14,7 +14,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_flowerPic = "sprites/text05.png";
     m_grassPic = "sprites/text05.png";
     m_bkground = new KGLBoxItem(20, 20);
-    m_ground = new KGLPhysicsItem(this);
+    m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
 
     setBkGround();
     setGround();

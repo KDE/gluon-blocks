@@ -12,21 +12,24 @@ Mainwindow::Mainwindow(QWidget * parent)
     for (int i = 0; i < 5; ++i) {
         BlokItem * test = new BlokItem;
         test->setPosition(-3, test->position().y());
-        m_engine->addItem(test);
+        test->setBlokType(BlokItem::Standard);
+	m_engine->addItem(test);
     }
 
     for (int i = 0; i < 5; ++i) {
         BlokItem * test = new BlokItem;
         test->setPosition(2, test->position().y());
+	test->setBlokType(BlokItem::Standard);
         m_engine->addItem(test);
 
 
     }
     //
-    KGLPhysicsItem * roof = new KGLPhysicsItem;
+    BlokItem * roof = new BlokItem;
     roof->setTexture("sprites/text02.png");
     roof->texture()->scale(QPointF(6, 1));
     roof->createBox(6, 1);
+    roof->setBlokType(BlokItem::Solid);
     roof->setPosition(-3, 4);
 
     m_engine->addItem(roof);
