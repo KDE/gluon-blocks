@@ -1,14 +1,14 @@
 #include "blokitem.h"
 #include <gluon/kgl/kglboxitem.h>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
-    :KGLPhysicsItem(KGLPhysicsItem::CircleShape,parent)
+    :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
 
     createBox(w,h);
     setZIndex(2);
-    m_texPic = "sprites/text01.png";
+    m_texPic = "data/sprites/normal_block.png";
     setTexture(m_texPic);
-    dropSound = new KALSound("bounce.ogg");
+    dropSound = new KALSound("data/sounds/bounce.ogg");
     connect(this, SIGNAL(collided()), this, SLOT(drop()));
 }
 

@@ -26,7 +26,7 @@ Mainwindow::Mainwindow(QWidget * parent)
     }
     //
     BlokItem * roof = new BlokItem;
-    roof->setTexture("sprites/text02.png");
+    roof->setTexture("data/sprites/solid_block.png");
     roof->texture()->scale(QPointF(6, 1));
     roof->createBox(6, 1);
     roof->setBlokType(BlokItem::Solid);
@@ -35,7 +35,7 @@ Mainwindow::Mainwindow(QWidget * parent)
     m_engine->addItem(roof);
 
     BlokItem * totem = new BlokItem;
-    totem->setTexture("sprites/totem1.png");
+    totem->setTexture("data/sprites/totem1.png");
     totem->createBox(1.5, 1.5);
     totem->setPosition(-0.75, 6);
     totem->setBlokType(BlokItem::Totem);

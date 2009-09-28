@@ -9,10 +9,10 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_fallSource =   new KALSound("sounds/bonebounce.ogg");
     m_musicSource->setLoop(true);
     m_musicSource->play();
-    m_bkPic = "sprites/back.png";
-    m_gdPic = "sprites/text03.png";
-    m_flowerPic = "sprites/text05.png";
-    m_grassPic = "sprites/text05.png";
+    m_bkPic = "data/sprites/sky_wallpaper.png";
+    m_gdPic = "data/sprites/green_ground.png";
+    m_flowerPic = "data/sprites/text05.png";
+    m_grassPic = "data/sprites/text05.png";
     m_bkground = new KGLBoxItem(20, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
 
@@ -45,7 +45,7 @@ void BlokEngine::setBkGround()
     m_bkground->setZIndex(LAYER_0);
 
     cloud = new KGLBoxItem(20, 10);
-    cloud->setTexture("sprites/cloud.png");
+    cloud->setTexture("data/sprites/cloud.png");
     cloud->setZIndex(LAYER_1);
     cloud->setPosition(-10, 0);
     cloud->updateTransform();
