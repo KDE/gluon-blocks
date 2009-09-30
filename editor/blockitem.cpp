@@ -1,10 +1,20 @@
 #include "blockitem.h"
 
+#include <gluon/kgl/kglphysicsengine.h>
+
 BlockItem::BlockItem(float w, float h,KGLPhysicsEngine* parent)
-        :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
+: KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
-createBox(w,h);
+    resize(w,h);
 }
+
+void BlockItem::resize(float w, float h)
+{
+    m_width = w;
+    m_height = h;
+    createBox(w, h);
+}
+
 void BlockItem::paintGL()
 {
     KGLPhysicsItem::paintGL();
@@ -23,10 +33,7 @@ void BlockItem::paintGL()
     glVertex2d(boundingBox().topRight().x(),boundingBox().topRight().y());
     glVertex2d(boundingBox().topLeft().x(),boundingBox().topLeft().y());
 
-
     glEnd();
 
     glPopMatrix();
-
-
 }

@@ -26,10 +26,7 @@
 
 #include "editor.h"
 
-
 using namespace std;
-
-
 
 int main(int argc, char *argv[])
 {
@@ -42,12 +39,8 @@ int main(int argc, char *argv[])
 
     KApplication app;
 
-Editor *main = new Editor;
-
-main->show();
-
-
+    Editor *main = new Editor;
+    main->show();
 
     app.exec();
-
 }

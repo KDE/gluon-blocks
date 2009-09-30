@@ -2,9 +2,9 @@ set(blokeditor_SRCS
     main.cpp 
     editor.cpp
     itemsdock.cpp
-    optiondock.cpp
+    optionsdock.cpp
     blockitem.cpp
-    blockengine.cpp
+    editorview.cpp
    )
 
 kde4_add_executable(blokeditor ${blokeditor_SRCS})

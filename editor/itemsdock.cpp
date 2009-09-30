@@ -1,13 +1,14 @@
 #include "itemsdock.h"
+
 #include <QComboBox>
-ItemsDock::ItemsDock(QWidget * parent)
-        :QDockWidget(parent)
+#include <QListWidget>
+
+#include <KLocale>
+
+ItemsDock::ItemsDock(QWidget *parent) : QDockWidget(parent)
 {
-    setObjectName("blok list");
-setWindowTitle("block list");
-m_treeWidget=new QTreeWidget;
-setWidget(m_treeWidget);
-
-
-
+    setObjectName("bloklist");
+    setWindowTitle(i18n("Block List"));
+    m_itemsListWidget = new QListWidget;
+    setWidget(m_itemsListWidget);
 }

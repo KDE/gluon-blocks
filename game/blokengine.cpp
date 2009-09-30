@@ -5,8 +5,8 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
 {
     KALEngine::instance();
 
-    m_musicSource =  new KALSound("sounds/sober.ogg");
-    m_fallSource =   new KALSound("sounds/bonebounce.ogg");
+    m_musicSource =  new KALSound("data/sounds/sober.ogg");
+    m_fallSource =   new KALSound("data/sounds/bonebounce.ogg");
     m_musicSource->setLoop(true);
     m_musicSource->play();
     m_bkPic = "data/sprites/sky_wallpaper.png";
