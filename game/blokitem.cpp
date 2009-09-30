@@ -3,21 +3,9 @@
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
     :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
-
     createBox(w,h);
-    setZIndex(2);
-    m_texPic = "data/sprites/normal_block.png";
-    setTexture(m_texPic);
-    dropSound = new KALSound("data/sounds/bounce.ogg");
-    connect(this, SIGNAL(collided()), this, SLOT(drop()));
+    setZIndex(LAYER_MIDDLE);
 }
-
-void BlokItem::drop()
-{
-
-
-}
-
 void BlokItem::setBlokType(ItemType newType)
 {
     m_blokType = newType;
@@ -53,3 +41,46 @@ void BlokItem::paintGL()
 
 
 }
+
+//==================++EXPLOSE==========================
+void ExploseBlok::explose(float Radius, float Force)
+{
+    m_exploseSound->play();
+    float Xpos = body()->GetPosition().x;
+    float Ypos = body()->GetPosition().y;
+    b2AABB Sector;
+    Sector.lowerBound.Set(Xpos-Radius, Ypos-Radius);
+    Sector.upperBound.Set(Xpos+Radius, Ypos+Radius);
+    const int32 k_bufferSize = 512;
+    b2Shape *buffer[k_bufferSize];
+
+
+    int32 count = body()->GetWorld()->Query(Sector, buffer, k_bufferSize);
+    b2Body* Body;
+    b2Vec2 HitVector;
+    b2Vec2 HitPoint;
+    b2Vec2 BodyPos;
+    float a;
+    float b;
+    float c;
+    float HitForce;
+    float Distance;
+    for (int32 i = 0; i < count; ++i)
+    {
+        Body = buffer[i]->GetBody();
+        BodyPos = Body->GetWorldCenter();
+        Distance=sqrt(pow((BodyPos.x)-Xpos,2)+pow((BodyPos.y)-Ypos,2));
+        if ((Body->IsDynamic()) & (Distance<=Radius))
+        {
+            HitForce=(Radius-Distance)*Force;
+            a=BodyPos.x-Xpos;
+            b=BodyPos.y-Ypos;
+            c=sqrt(pow(a,2)+pow(b,2));
+            HitVector.Set(HitForce*(a/c), HitForce*(b/c));
+            HitPoint=Body->GetWorldCenter();
+            Body->ApplyImpulse(HitVector, HitPoint);
+        };
+    }
+}
+
+

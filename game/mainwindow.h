@@ -22,7 +22,7 @@ public:
     void mousePressEvent(QMouseEvent * event);
 private:
     BlokEngine * m_engine;
-
+    BlokItem * bomb;
 };
 
 #endif // MAINWINDOW_H

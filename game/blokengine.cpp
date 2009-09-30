@@ -1,94 +1,89 @@
 #include "blokengine.h"
-
+#include <gluon/kgl/kglview.h>
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
-    KALEngine::instance();
-
-    m_musicSource =  new KALSound("data/sounds/sober.ogg");
-    m_fallSource =   new KALSound("data/sounds/bonebounce.ogg");
-    m_musicSource->setLoop(true);
-    m_musicSource->play();
-    m_bkPic = "data/sprites/sky_wallpaper.png";
-    m_gdPic = "data/sprites/green_ground.png";
-    m_flowerPic = "data/sprites/text05.png";
-    m_grassPic = "data/sprites/text05.png";
-    m_bkground = new KGLBoxItem(20, 20);
+    m_ambianceSound=  new KALSound();
+    m_backGround= new KGLBoxItem(20, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
 
 
-
-
-    setBkGround();
-    setGround();
-    addFlower(-3);
-    addFlower(6);
-    addItem(m_bkground);
-    addItem(m_ground);
-
-
-
-
-}
-
-BlokEngine::~BlokEngine()
-{
-}
-
-void BlokEngine::setBkGround()
-{
-
-
-    m_bkground->setPosition(-m_bkground->center());
-    m_bkground->setTexture(m_bkPic);
-    m_bkground->updateTransform();
-    m_bkground->setZIndex(LAYER_0);
-
-    cloud = new KGLBoxItem(20, 10);
-    cloud->setTexture("data/sprites/cloud.png");
-    cloud->setZIndex(LAYER_1);
-    cloud->setPosition(-10, 0);
-    cloud->updateTransform();
-
-    addItem(cloud);
-}
-
-void BlokEngine::setGround()
-{
+    m_backGround->setPosition(-m_backGround->center());
+    m_backGround->setTexture(m_backGroundPath);
+    m_backGround->updateTransform();
+    m_backGround->setZIndex(LAYER_BEHIND);
 
     m_ground->createBox(20, 1);
-    m_ground->setZIndex(LAYER_1);
-    m_ground->setTexture(m_gdPic);
+    m_ground->setZIndex(LAYER_BEHIND);
+    m_ground->setTexture(m_groundPath);
     m_ground->texture()->scale(QPoint(1,1));
     m_ground->setPosition(-10, -10);
     m_ground->setStatic();
 
 
+    addItem(m_backGround);
+    addItem(m_ground);
+
+    m_emptyClickSound = new KALSound("data/sounds/empty-click.wav");
+    m_removeCLickSound = new KALSound("data/sounds/remove-click.ogg");
+
+
+
+    setBackGround("data/sprites/sky_wallpaper.png");
+    setGround("data/sprites/green_ground.png");
+    setMusic("data/sounds/sober.ogg");
+
+
+    addItem(new SolidBlok());
+    addItem(new NormalBlok());
+    addItem(new ChimicBlok());
+    addItem(new ExploseBlok());
 }
-void BlokEngine::addFlower(const float &x)
+
+
+
+BlokEngine::~BlokEngine()
 {
-
-    KGLBoxItem * flower = new KGLBoxItem(2, 2);
-    flower->setTexture(m_flowerPic);
-    flower->setPosition(x, -9);
-    flower->updateTransform();
-    flower->setZIndex(LAYER_1);
-    addItem(flower);
-
-
+    delete m_ground;
+    delete m_backGround;
+    delete m_emptyClickSound;
+    delete m_removeCLickSound;
 }
+
+
+
 void BlokEngine ::mainLoop(float ff)
 {
-
-
-
     KGLPhysicsEngine::mainLoop(ff);
+}
 
+void BlokEngine::mousePress(QMouseEvent * event)
+{
+    KGLView * view  = qobject_cast<KGLView*>(parent());
+    QPointF pos = view->mapToGL(event->pos());
 
-    cloud->texture()->translate(QPointF(0.001, 0));
-    cloud->updateTransform();
+    if ( event->button() == Qt::LeftButton)
+    {
+        KGLPhysicsItem * item = itemAt(pos) ;
+        if (item == NULL) { return;}
 
+        BlokItem * blok = dynamic_cast<BlokItem*>(item);
+        if (blok != NULL && blok->blokType() == BlokItem::Normal)
+        {
+            removeItem(item);
+            m_removeCLickSound->play();
+            return;
+        }
 
+        if (blok != NULL && blok->blokType() == BlokItem::Explode)
+        {
+            dynamic_cast<ExploseBlok*>(blok)->explose(10,5);
+            removeItem(item);
+            return;
+        }
 
+        else m_emptyClickSound->play();
+
+    }
 }
 
