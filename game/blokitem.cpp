@@ -1,5 +1,6 @@
 #include "blokitem.h"
 #include <gluon/kgl/kglboxitem.h>
+#include <QMessageBox>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
     :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
@@ -95,6 +96,8 @@ void ExploseBlok::explose(float Radius, float Force)
     {
 
 if ( item->objectName() == "GROUND_OBJECT")
+        {
         setColor(Qt::red);
-
+    QMessageBox::information(0,"you lost","the totem has touch the floor...sorry");
+    }
     }

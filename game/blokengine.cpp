@@ -1,5 +1,6 @@
 #include "blokengine.h"
 #include <gluon/kgl/kglview.h>
+#include <QMessageBox>
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
@@ -20,6 +21,19 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground->setStatic();
     m_ground->setObjectName("GROUND_OBJECT");
 
+
+    KGLPhysicsItem * wallLeft = new KGLPhysicsItem;
+    wallLeft->createBox(0.1,10);
+    wallLeft->setPosition(-10,-10);
+    wallLeft->updateTransform();
+    KGLPhysicsItem * wallRight = new KGLPhysicsItem;
+    wallRight->createBox(0.1,10);
+    wallRight->setPosition(10,-10);
+    wallRight->updateTransform();
+
+    addItem(wallLeft);
+    addItem(wallRight);
+
     QString spritesResourceDir, soundsResourceDir;
     spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
     soundsResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/";
@@ -27,7 +41,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_emptyClickSound = new KALSound(soundsResourceDir + "empty-click.wav");
     m_removeCLickSound = new KALSound(soundsResourceDir + "remove-click.ogg");
 
-
+    m_nbNormalBlock=0;
     init();
 }
 
@@ -70,8 +84,12 @@ void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
         BlokItem * blok = dynamic_cast<BlokItem*>(item);
         if (blok != NULL && blok->blokType() == BlokItem::Normal)
         {
+            m_nbNormalBlock--;
             removeItem(item);
             m_removeCLickSound->play();
+
+            if ( m_nbNormalBlock<=1)
+                QMessageBox::information(0,"you win","you destroy all normal item!!");
             return;
         }
 

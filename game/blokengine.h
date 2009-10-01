@@ -12,7 +12,6 @@
 class BlokEngine;
 
 
-
 class BlokEngine : public KGLPhysicsEngine
 {
     Q_OBJECT
@@ -36,7 +35,8 @@ m_ambianceSound->setLoop(true);
 
 }
     void mainLoop(float ff);
-    void explosion(float Xpos, float Ypos, float Radius, float Force);
+
+    int m_nbNormalBlock;
 
 protected:
     void mousePressed(QPointF pos, Qt::MouseButton button);
