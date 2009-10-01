@@ -49,6 +49,10 @@ private:
     KALSound * m_ambianceSound;
     KALSound * m_emptyClickSound;
     KALSound * m_removeCLickSound;
+    KGLPhysicsItem * m_wallLeft;
+    KGLPhysicsItem * m_wallRight;
+     KGLPhysicsItem * m_wallTop;
+
 
 };
 

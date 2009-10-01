@@ -22,17 +22,10 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground->setObjectName("GROUND_OBJECT");
 
 
-    KGLPhysicsItem * wallLeft = new KGLPhysicsItem;
-    wallLeft->createBox(0.1,10);
-    wallLeft->setPosition(-10,-10);
-    wallLeft->updateTransform();
-    KGLPhysicsItem * wallRight = new KGLPhysicsItem;
-    wallRight->createBox(0.1,10);
-    wallRight->setPosition(10,-10);
-    wallRight->updateTransform();
+    m_wallLeft = new KGLPhysicsItem;
+    m_wallRight = new KGLPhysicsItem;
+    m_wallTop = new KGLPhysicsItem;
 
-    addItem(wallLeft);
-    addItem(wallRight);
 
     QString spritesResourceDir, soundsResourceDir;
     spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
@@ -55,6 +48,26 @@ void BlokEngine::init()
     addItem(m_ground);
     setBackGround(spritesResourceDir + "sky_wallpaper.png");
     setGround(spritesResourceDir + "green_ground.png");
+
+
+    m_wallLeft->createBox(0.1,20);
+    m_wallLeft->setPosition(-10,-10);
+    m_wallLeft->updateTransform();
+    m_wallLeft->setStatic(true);
+
+    m_wallRight->createBox(0.1,20);
+    m_wallRight->setPosition(9.9,-10);
+    m_wallRight->updateTransform();
+    m_wallRight->setStatic(true);
+
+    m_wallTop->createBox(20,0.1);
+    m_wallTop->setPosition(-10,9.9);
+    m_wallTop->updateTransform();
+    m_wallTop->setStatic(true);
+
+    addItem(m_wallLeft);
+    addItem(m_wallRight);
+    addItem(m_wallTop);
 }
 
 BlokEngine::~BlokEngine()
