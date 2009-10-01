@@ -65,8 +65,8 @@ OptionsDock::OptionsDock(EditorView * view,QWidget * parent)
     QHBoxLayout * buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(m_itemTypeCombo);
     buttonLayout->addWidget(m_delButton);
-QWidget * buttonWidget = new QWidget;
-buttonWidget->setLayout(buttonLayout);
+    QWidget * buttonWidget = new QWidget;
+    buttonWidget->setLayout(buttonLayout);
 
     blockTypesLayout->addWidget(buttonWidget);
     blockTypesLayout->addWidget(m_blokListWidget);
@@ -82,7 +82,7 @@ buttonWidget->setLayout(buttonLayout);
     mainWidget->setLayout(mainLayout);
     
     setWidget(mainWidget);
-    
+    m_blokListWidget->setEnabled(false);
     setupCombo();
     setupPropertyTable();
     setCurrentItemTexture(m_itemTypeCombo->currentIndex());
@@ -91,12 +91,22 @@ buttonWidget->setLayout(buttonLayout);
     connect(m_groundCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setGroundTexture(int)));
     connect(m_itemTypeCombo,SIGNAL(currentIndexChanged(int)),this,SLOT(setCurrentItemTexture(int)));
     connect(m_editorView,SIGNAL(itemAdded()),this,SLOT(refreshList()));
+    connect(m_delButton,SIGNAL(clicked()),this,SLOT(removeItem()));
+    connect(m_editorView,SIGNAL(itemSelected(int)),this,SLOT(setSelectedItem(int)));
 
 
 
     
 }
-
+OptionsDock::~OptionsDock()
+{
+    delete m_propertiesTableWidget;
+    delete m_blokListWidget;
+    delete m_bkgroundCombo;
+    delete m_groundCombo;
+    delete m_itemTypeCombo;
+    delete m_delButton;
+}
 QString OptionsDock::wallpaperTexturePath() const{
     return m_bkgroundCombo->itemData(m_bkgroundCombo->currentIndex(), Qt::UserRole).toString();
 }
@@ -137,6 +147,7 @@ void OptionsDock::setupPropertyTable()
     spinH->setMinimum(1);
     insertPropertyWidget("width",spinH);
     insertPropertyWidget("height",spinW);
+    insertPropertyWidget("static",new QSpinBox);
 
     connect(spinH,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)));
     connect(spinW,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)));
@@ -196,4 +207,18 @@ void OptionsDock::setCurrentItemProperty(double value)
     float h = qobject_cast<QDoubleSpinBox*>(propertyWidget("height"))->value();
 
     m_editorView->setItemSize(QSizeF(w,h));
+}
+void OptionsDock::removeItem()
+{
+
+    int index=m_blokListWidget->currentRow();
+    if ( index!=-1)
+    {
+        m_editorView->removeBlock(m_editorView->blockList().at(index));
+        refreshList();
+    }
+}
+void OptionsDock::setSelectedItem(int id)
+{
+    m_blokListWidget->setCurrentRow(id);
 }

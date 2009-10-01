@@ -66,8 +66,7 @@ void Editor::newFile()
     m_currentFile.clear();
     m_editorView->setWallpaperTexture(m_optionsDock->wallpaperTexturePath());
     m_editorView->setGroundTexture(m_optionsDock->groundTexturePath());
-//    m_editorView->setItemTexture(m_optionsDock->itemTexturePath());
-//    m_optionsDock->initPropertyEditor(m_editorView->propertiesMap());
+m_optionsDock->refreshList();
 }
 
 void Editor::openFile()

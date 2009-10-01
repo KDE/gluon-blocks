@@ -17,7 +17,13 @@ EditorView::EditorView(QWidget * parent)
     setMouseTracking(true);
     initEngine();
 }
+EditorView::~EditorView(){
+    delete m_groundItem;
+    delete m_wallPaperItem;
+    delete m_selectedItem;
 
+
+}
 void EditorView::initEngine()
 {
     stop();
@@ -38,6 +44,7 @@ void EditorView::initEngine()
     m_engine->addItem(m_groundItem);
 
     setCursor(QCursor(Qt::CrossCursor));
+    m_blockList.clear();
     updateGL();
     m_selectedItem = 0;
 }
@@ -96,26 +103,29 @@ void EditorView::mousePressEvent(QMouseEvent *event)
     {
         QPointF pos = mapToGL(event->pos());
         KGLPhysicsItem *newSelectedItem = m_engine->itemAt(pos);
+
         if (newSelectedItem)
         {
             m_moving = true;
+            emit itemSelected(m_blockList.indexOf(dynamic_cast<BlockItem*>(newSelectedItem)));
+
         }
         else
         {
             BlockItem *item = new BlockItem(1, 1);
             item->setTexture(m_currentBlockTexture);
-	    item->setPosition(mapToGL(event->pos())-item->center());
-	    item->updateTransform();
-	    m_engine->addItem(item);
+            item->setPosition(mapToGL(event->pos())-item->center());
+            item->updateTransform();
+            m_engine->addItem(item);
             m_blockList.append(item);
             emit itemAdded();
-	    newSelectedItem = dynamic_cast<BlockItem *>(item);
-	}
-	if (m_selectedItem)
-	    m_selectedItem->setColor(QColor(255, 255, 255, 255));
-	newSelectedItem->setColor(QColor(255, 255, 255, 100));
-	m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
-	setCursor(QCursor(Qt::ClosedHandCursor));
+            newSelectedItem = dynamic_cast<BlockItem *>(item);
+        }
+        if (m_selectedItem)
+            m_selectedItem->setColor(QColor(255, 255, 255, 255));
+        newSelectedItem->setColor(QColor(255, 255, 255, 100));
+        m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
+        setCursor(QCursor(Qt::ClosedHandCursor));
     }
     updateGL();
 }
@@ -133,14 +143,21 @@ void EditorView::wheelEvent(QWheelEvent*event)
 }
 
 
-    void EditorView::setItemSize(const QSizeF& size)
-    {
- if (m_selectedItem)
+void EditorView::setItemSize(const QSizeF& size)
+{
+    if (m_selectedItem)
     {
         m_selectedItem->resize(size.width(), size.height());
         m_selectedItem->texture()->setScale(size.width(), size.height());
         m_selectedItem->setColor(QColor(255, 255, 255, 100));
-        m_selectedItem->updateTransform();
-       updateGL();
+        updateGL();
     }
-    }
+}
+void EditorView::removeBlock(BlockItem * item)
+{
+
+    m_engine->removeItem(item);
+    m_blockList.removeOne(item);
+    updateGL();
+
+}

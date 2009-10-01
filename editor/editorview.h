@@ -14,6 +14,7 @@ class EditorView : public KGLView
 Q_OBJECT
 public:
     EditorView(QWidget * parent = 0);
+    ~EditorView();
     void initEngine();
     QList <BlockItem*> blockList(){
         return m_blockList;
@@ -24,12 +25,14 @@ public:
 signals:
     void updateProperties(const QMap<QString, QWidget *> &properties);
     void itemAdded();
+    void itemSelected(int id);
 public:
     void setItemTexture(QString path);
     void setWallpaperTexture(QString path);
     void setGroundTexture(QString path);
     void setItemSize(const QSizeF& size);
     void staticChanged(int value);
+    void removeBlock(BlockItem * item);
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);

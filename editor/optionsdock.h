@@ -16,6 +16,7 @@ class OptionsDock : public QDockWidget
     Q_OBJECT
 public:
     OptionsDock(EditorView * view, QWidget * parent=0);
+~OptionsDock();
     QString wallpaperTexturePath() const;
     QString groundTexturePath() const;
     QString itemTexturePath() const;
@@ -30,11 +31,13 @@ protected:
     //retyrn the widget in the table by his name
     QWidget * propertyWidget(const QString& name);
 
-protected slots:
+public Q_SLOTS:
     void setCurrentItemTexture(int index); //activate by m_itemTypeCombo
     void setCurrentItemProperty(double value);//activate by all widgets inside Table.
     void setWalpaperTexture(int index);//actiate by m_bkcombo
     void setGroundTexture(int index);//activta by m_groundcombo
+    void removeItem();
+    void setSelectedItem(int id);
 
     void refreshList();//refresh the block list of the editorView
 
