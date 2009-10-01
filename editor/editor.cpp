@@ -79,16 +79,15 @@ void Editor::openFile()
     while (!in.atEnd())
     {
         qreal x, y, width, height;
-        QImage texture;
-        in >> x >> y >> width >> height >> texture;
+        QString texturePath;
+        in >> x >> y >> width >> height >> texturePath;
 
         BlockItem *item = new BlockItem(1, 1);
         item->resize(width, height);
-        item->setTexture(texture);
-        item->texture()->setScale(item->width(), item->height());
+        item->setTexture(texturePath);
         item->setPosition(x, y);
         item->updateTransform();
-        m_editorView->engine()->addItem(item);
+        (dynamic_cast<KGLPhysicsEngine *>(m_editorView->engine()))->addItem(item);
         kDebug() << "Agora a engine tem " << m_editorView->engine()->itemsCount();
     }
     file.close();
@@ -116,14 +115,15 @@ void Editor::saveFileAs(const QString &outputFileName)
 
     QDataStream out(&file);
 
+    BlockItem *blockItem;
     foreach (KGLItemList itemList, m_editorView->engine()->items().values())
         foreach (KGLItem *item, itemList)
         {
-            if (dynamic_cast<BlockItem *>(item))
+            if ((blockItem = dynamic_cast<BlockItem *>(item)))
             {
-                out << item->position().x() << item->position().y();
-                out << item->boundingBox().width() << item->boundingBox().height();
-                out << item->texture()->image();
+                out << blockItem->position().x() << item->position().y();
+                out << blockItem->boundingBox().width() << item->boundingBox().height();
+                out << blockItem->texturePath();
             }
         }
 

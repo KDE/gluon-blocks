@@ -126,7 +126,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	{
 	    BlockItem *item = new BlockItem(1, 1);
             item->setTexture(m_currentBlockTexture);
-	    item->texture()->setScale(item->width(), item->height());
 	    item->setPosition(mapToGL(event->pos())-item->center());
 	    item->updateTransform();
 	    m_engine->addItem(item);

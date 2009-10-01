@@ -15,6 +15,13 @@ void BlockItem::resize(float w, float h)
     createBox(w, h);
 }
 
+void BlockItem::setTexture(const QString &texturePath)
+{
+    KGLPhysicsItem::setTexture(texturePath);
+    KGLPhysicsItem::texture()->setScale(width(), height());
+    m_texturePath = texturePath;
+}
+
 void BlockItem::paintGL()
 {
     KGLPhysicsItem::paintGL();
