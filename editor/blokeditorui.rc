@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui name="blockeditor" version="1.0" xmlns="http://www.kde.org/standards/kxmlgui/1.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0
+     http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
+<MenuBar>
+    <Menu name="gameToolBar">
+	<text>Game</text>
+	<Action name="startengine"/>
+	<Action name="stopengine"/>
+    </Menu>
+</MenuBar>
+<ToolBar name="mainToolBar">
+    <text>Game Toolbar</text>
+    <Action name="startengine"/>
+    <Action name="stopengine"/>
+</ToolBar>
+</gui>

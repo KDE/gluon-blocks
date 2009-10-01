@@ -30,8 +30,8 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    KAboutData aboutData("main", 0,
-                         ki18n("blokeditor"), "1.0",
+    KAboutData aboutData("blokeditor", "blokeditor",
+                         ki18n("Blok Editor"), "1.0",
                          ki18n("blokeditor"),
                          KAboutData::License_GPL,
                          ki18n("Copyright (c) 2009 Developer"));

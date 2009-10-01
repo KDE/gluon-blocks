@@ -1,16 +1,28 @@
 #include "editorview.h"
 
 #include <QCursor>
+#include <QDoubleSpinBox>
+#include <QCheckBox>
 
 #include <gluon/kgl/kglphysicsengine.h>
 #include "blockitem.h"
 
-EditorView::EditorView(QWidget * parent) : KGLView(parent), m_selectedItem(0), m_moving(false)
+EditorView::EditorView(QWidget * parent)
+: KGLView(parent),
+  m_engine(0),
+  m_selectedItem(0),
+  m_moving(false)
 {
     grabMouse();
+    setMouseTracking(true);
+    initEngine();
+}
+
+void EditorView::initEngine()
+{
+    delete m_engine;
     m_engine = new KGLPhysicsEngine;
     setEngine(m_engine);
-    setMouseTracking(true);
 
     m_wallPaperItem = new KGLBoxItem(20, 20);
     m_wallPaperItem->setPosition(-10, -10);
@@ -25,43 +37,67 @@ EditorView::EditorView(QWidget * parent) : KGLView(parent), m_selectedItem(0), m
     m_engine->addItem(m_groundItem);
 
     setCursor(QCursor(Qt::CrossCursor));
+    updateGL();
+    initPropertiesMap();
+    m_selectedItem = 0;
 }
 
-void EditorView::setWallpaperTexture(const QString &path)
+const QMap<QString, QWidget *> &EditorView::propertiesMap() const
 {
-    m_wallPaperItem->setTexture(path);
-}
-
-void EditorView::setGroundTexture(const QString & path)
-{
-    m_groundItem->setTexture(path);
+    return m_propertiesMap;
 }
 
 void EditorView::setItemTexture(QString path)
 {
-    m_currentTexture = path;
+    m_currentBlockTexture = path;
 }
 
-void EditorView::setItemSize(double w, double h)
+void EditorView::setWallpaperTexture(QString path)
+{
+    m_wallpaperTexture = path;
+    m_wallPaperItem->setTexture(m_wallpaperTexture);
+    updateGL();
+}
+
+void EditorView::setGroundTexture(QString path)
+{
+    m_groundTexture = path;
+    m_groundItem->setTexture(m_groundTexture);
+    updateGL();
+}
+
+void EditorView::widthChanged(double value)
 {
     if (m_selectedItem)
     {
-	m_selectedItem->resize(w, h);
-	m_selectedItem->texture()->setScale(w, h);
+	float width = m_selectedItem->width();
+	float height = m_selectedItem->height();
+	QDoubleSpinBox *spin = dynamic_cast<QDoubleSpinBox *>(sender());
+	if (spin->objectName() == "widthSpinBox")
+	    width = value;
+	if (spin->objectName() == "heightSpinBox")
+	    height = value;
+	m_selectedItem->resize(width, height);
+	m_selectedItem->texture()->setScale(width, height);
 	m_selectedItem->setColor(QColor(255, 255, 255, 100));
 	updateGL();
     }
+}
+
+void EditorView::staticChanged(int value)
+{
+    if (m_selectedItem)
+        m_selectedItem->setStatic((value == Qt::Checked) ? true:false);
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_moving)
     {
-	m_selectedItem->setPosition(mapToGL(event->pos()));
+	m_selectedItem->setPosition(mapToGL(event->pos())-m_selectedItem->center());
 	m_selectedItem->updateTransform();
 	m_engine->world()->DestroyBody(m_selectedItem->body());
 	m_selectedItem->setup(m_engine->world());
-
     }
     else
     {
@@ -89,9 +125,9 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	else
 	{
 	    BlockItem *item = new BlockItem(1, 1);
-	    item->setTexture(m_currentTexture);
+            item->setTexture(m_currentBlockTexture);
 	    item->texture()->setScale(item->width(), item->height());
-	    item->setPosition(mapToGL(event->pos()));
+	    item->setPosition(mapToGL(event->pos())-item->center());
 	    item->updateTransform();
 	    m_engine->addItem(item);
 	    newSelectedItem = dynamic_cast<BlockItem *>(item);
@@ -102,11 +138,19 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
 	setCursor(QCursor(Qt::ClosedHandCursor));
 
-	QMap<QString, QString> properties;
-	properties["Width"] = QString::number(m_selectedItem->width());
-	properties["Height"] = QString::number(m_selectedItem->height());
+	initPropertiesMap();
+	QDoubleSpinBox *spinBox;
+	spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Width"]);
+	spinBox->setObjectName("widthSpinBox");
+	spinBox->setValue(m_selectedItem->width());
+        connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
 
-	emit updateProperties(properties);
+	spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Height"]);
+	spinBox->setObjectName("heightSpinBox");
+	spinBox->setValue(m_selectedItem->height());
+        connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
+
+	emit updateProperties(m_propertiesMap);
     }
     updateGL();
 }
@@ -115,9 +159,22 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     m_moving = false;
+    setCursor(QCursor(Qt::OpenHandCursor));
 }
 
 void EditorView::wheelEvent(QWheelEvent*event)
 {
     Q_UNUSED(event);
+}
+
+void EditorView::initPropertiesMap()
+{
+    QDoubleSpinBox *spinBox;
+
+    spinBox = new QDoubleSpinBox;
+    spinBox->setValue(1.0);
+    m_propertiesMap["Width"] = spinBox;
+    spinBox = new QDoubleSpinBox;
+    spinBox->setValue(1.0);
+    m_propertiesMap["Height"] = spinBox;
 }

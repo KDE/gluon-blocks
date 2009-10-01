@@ -11,23 +11,27 @@ class QComboBox;
 
 class OptionsDock : public QDockWidget
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     OptionsDock(QWidget * parent=0);
-    QString wallPaperTexturePath() const;
+    QString wallpaperTexturePath() const;
     QString groundTexturePath() const;
     QString itemTexturePath() const;
+    void initPropertyEditor(const QMap<QString, QWidget *> &propertiesMap);
 signals:
-    void itemPathChanged(QString texturePath);
+    void itemTextureChanged(QString texturePath);
+    void wallpaperTextureChanged(QString texturePath);
+    void groundTextureChanged(QString texturePath);
     void geometryChanged(double w, double h);
 protected:
-    void setupInfoTable();
     void setupItemTree();
     void setupCombo();
 protected slots:
-    void setCurrentItemPath(QListWidgetItem *item);
+    void setCurrentItemTexture(QListWidgetItem *item);
+    void setWalpaperTexture(int index);
+    void setGroundTexture(int index);
     void spinChanged(double value);
-    void updateProperties(const QMap<QString, QString> &properties);
+    void updateProperties(const QMap<QString, QWidget *> &properties);
 private:
     QTableWidget *m_propertiesTableWidget;
     QListWidget *m_blokTypesListWidget;
