@@ -15,7 +15,12 @@ EditorView::EditorView(QWidget * parent)
 {
     grabMouse();
     setMouseTracking(true);
+    m_engine= new KGLPhysicsEngine;
+    setEngine(m_engine);
+    m_wallPaperItem = new KGLBoxItem(20, 20);
+    m_groundItem = new KGLPhysicsItem;
     initEngine();
+
 }
 EditorView::~EditorView(){
     delete m_groundItem;
@@ -27,16 +32,10 @@ EditorView::~EditorView(){
 void EditorView::initEngine()
 {
     stop();
-    delete m_engine;
-    m_engine = new KGLPhysicsEngine;
-    setEngine(m_engine);
-
-    m_wallPaperItem = new KGLBoxItem(20, 20);
+    removeAll();
     m_wallPaperItem->setPosition(-10, -10);
     m_wallPaperItem->updateTransform();
     m_engine->addItem(m_wallPaperItem);
-
-    m_groundItem = new KGLPhysicsItem;
     m_groundItem->createBox(20, 1);
     m_groundItem->setPosition(-10, -10);
     m_groundItem->updateTransform();
@@ -159,5 +158,14 @@ void EditorView::removeBlock(BlockItem * item)
     m_engine->removeItem(item);
     m_blockList.removeOne(item);
     updateGL();
+
+}
+void EditorView::removeAll()
+{
+
+    foreach (   BlockItem* item, m_blockList)
+        m_engine->removeItem(item);
+    m_blockList.clear();
+
 
 }

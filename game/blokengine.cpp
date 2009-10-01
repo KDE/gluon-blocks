@@ -18,6 +18,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground->texture()->scale(QPoint(1,1));
     m_ground->setPosition(-10, -10);
     m_ground->setStatic();
+    m_ground->setObjectName("GROUND_OBJECT");
 
     QString spritesResourceDir, soundsResourceDir;
     spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
@@ -26,9 +27,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_emptyClickSound = new KALSound(soundsResourceDir + "empty-click.wav");
     m_removeCLickSound = new KALSound(soundsResourceDir + "remove-click.ogg");
 
-    m_cursor = new KGLBoxItem(1,1);
-    m_cursor->setZIndex(4);
-    addItem(m_cursor);
+
     init();
 }
 
@@ -88,12 +87,3 @@ void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
     }
 }
 
-    void BlokEngine::mouseMoved(QPointF pos, Qt::MouseButton button)
-    {
-
-
-m_cursor->setPosition(pos);
-m_cursor->updateTransform();
-
-
-    }

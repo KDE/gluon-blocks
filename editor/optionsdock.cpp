@@ -138,6 +138,25 @@ void OptionsDock::setupCombo()
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "solid_block.png")),"solid",QVariant(spritePath + "solid_block.png"));
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "chimic_block.png")),"chimic",QVariant(spritePath + "chimic_block.png"));
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "explode_block.png")),"explode",QVariant(spritePath + "explode_block.png"));
+     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "totem1_block.png")),"totem",QVariant(spritePath + "totem1_block.png"));
+
+
+//    //--------insert Totem block
+//
+//QDir totemDir (KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/");
+//
+//    foreach (QString file, totemDir.entryList())
+//    {
+//        if (file.contains("totem"))
+//        {
+// KIcon icon(QPixmap(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/" + file));
+//            m_itemTypeCombo->addItem(icon,file, QVariant(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/" + file));
+//        }
+//    }
+
+
+
+
 }
 void OptionsDock::setupPropertyTable()
 {

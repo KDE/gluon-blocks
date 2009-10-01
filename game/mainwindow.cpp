@@ -62,9 +62,12 @@ void Mainwindow::loadLevel()
             item = new ChimicBlok;
         if (texturePath.contains("explode_block"))
             item = new ExploseBlok;
+                if (texturePath.contains("totem"))
+            item = new TotemBlok;
+
         item->resize(width, height);
         item->setPosition(x, y);
-        item->texture()->scale(item->width(), item->height());
+        item->texture()->setScale(item->width(), item->height());
         item->updateTransform();
         m_engine->addItem(item);
     }

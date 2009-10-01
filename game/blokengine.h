@@ -40,7 +40,7 @@ m_ambianceSound->setLoop(true);
 
 protected:
     void mousePressed(QPointF pos, Qt::MouseButton button);
-    void mouseMoved(QPointF pos, Qt::MouseButton button);
+
 private:
     KGLBoxItem * m_backGround;
     KGLPhysicsItem * m_ground;
@@ -49,7 +49,6 @@ private:
     KALSound * m_ambianceSound;
     KALSound * m_emptyClickSound;
     KALSound * m_removeCLickSound;
-       KGLBoxItem * m_cursor;
 
 };
 

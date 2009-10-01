@@ -84,8 +84,19 @@ public:
     KALSound * m_exploseSound;
 };
 
+//=========EXPLOSE BLOCK =======================
 
+class TotemBlok : public BlokItem
+{
+public:
+    TotemBlok()
+        :BlokItem(){
+        setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/totem1_block.png");
+        setBlokType(Totem);
+    }
 
+    void collidesWithItem(KGLPhysicsItem * item);
+};
 
 
 

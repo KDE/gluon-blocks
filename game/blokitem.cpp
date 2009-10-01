@@ -91,3 +91,10 @@ void ExploseBlok::explose(float Radius, float Force)
 }
 
 
+    void TotemBlok::collidesWithItem(KGLPhysicsItem * item)
+    {
+
+if ( item->objectName() == "GROUND_OBJECT")
+        setColor(Qt::red);
+
+    }

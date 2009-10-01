@@ -22,6 +22,7 @@ public:
     BlockItem * selectedItem(){
         return m_selectedItem;
     }
+    void removeAll();
 signals:
     void updateProperties(const QMap<QString, QWidget *> &properties);
     void itemAdded();
@@ -33,6 +34,7 @@ public:
     void setItemSize(const QSizeF& size);
     void staticChanged(int value);
     void removeBlock(BlockItem * item);
+
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
