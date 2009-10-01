@@ -45,6 +45,7 @@ public:
         :BlokItem(){
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/normal_block.png");
         setBlokType(Normal);
+        setObjectName("NORMAL_BLOCK");
     }
 };
 
@@ -56,6 +57,7 @@ public:
         :BlokItem(){
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/solid_block.png");
         setBlokType(Solid);
+        setObjectName("SOLID_BLOCK");
     }
 };
 
@@ -67,7 +69,12 @@ public:
         :BlokItem(){
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/chimic_block.png");
         setBlokType(Chimic);
+        setObjectName("CHIMIC_BLOCK");
+        m_exploseSound=new KALSound(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/explosion.wav");
     }
+    void explose(float Radius, float Force);
+    void collidesWithItem(KGLPhysicsItem * item);
+    KALSound * m_exploseSound;
 };
 
 //=========EXPLOSE BLOCK =======================
@@ -78,6 +85,7 @@ public:
         :BlokItem(){
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/explode_block.png");
         setBlokType(Explode);
+        setObjectName("EXPLOSE_BLOCK");
         m_exploseSound=new KALSound(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/explosion.wav");
     }
     void explose(float Radius, float Force);
@@ -93,6 +101,7 @@ public:
         :BlokItem(){
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/totem1_block.png");
         setBlokType(Totem);
+        setObjectName("TOTEM_BLOCK");
     }
 
     void collidesWithItem(KGLPhysicsItem * item);
