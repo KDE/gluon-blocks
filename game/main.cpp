@@ -33,9 +33,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    KAboutData aboutData("main", 0,
-                         ki18n("gluon"), "1.0",
-                         ki18n("gluon"),
+    KAboutData aboutData("blok", "blok",
+                         ki18n("Blok"), "1.0",
+                         ki18n("blok"),
                          KAboutData::License_GPL,
                          ki18n("Copyright (c) 2009 Developer"));
     KCmdLineArgs::init(argc, argv, &aboutData);

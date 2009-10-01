@@ -16,6 +16,13 @@ BlokItem::ItemType BlokItem::blokType()
     return m_blokType;
 }
 
+void BlokItem::resize(float w, float h)
+{
+    m_width = w;
+    m_height = h;
+    createBox(w, h);
+}
+
 void BlokItem::paintGL()
 {
     KGLPhysicsItem::paintGL();

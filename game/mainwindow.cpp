@@ -1,23 +1,83 @@
 #include "mainwindow.h"
+
+#include <KLocale>
+#include <KFileDialog>
+
 Mainwindow::Mainwindow(QWidget * parent)
     : GluonMainWindow(parent)
 {
-
-    m_engine = new BlokEngine();
+    m_engine = new BlokEngine;
 
     setMinimumSize(500,500);
     view()->setEngine(m_engine);
     setMouseTracking(true);
-   view()->start();
+    view()->start();
+    setupActions();
+}
 
+void Mainwindow::setupActions()
+{
+    KAction* loadLevelAction = new KAction(this);
+    loadLevelAction->setText(i18n("Load a Single Level"));
+    loadLevelAction->setIcon(KIcon("document-open"));
+    actionCollection()->addAction("loadLevel", loadLevelAction);
+    connect(loadLevelAction, SIGNAL(triggered()), this, SLOT(loadLevel()));
 
+    KAction* loadLevelsAction = new KAction(this);
+    loadLevelsAction->setText(i18n("Load Multiple Levels"));
+    loadLevelsAction->setIcon(KIcon("document-open-folder"));
+    actionCollection()->addAction("loadLevels", loadLevelsAction);
+    connect(loadLevelsAction, SIGNAL(triggered()), this, SLOT(loadLevels()));
+
+    setupGUI();
 }
 
 void Mainwindow::mousePressEvent(QMouseEvent * event)
 {
-
     m_engine->mousePress(event);
+}
 
+void Mainwindow::loadLevel()
+{
+    QString fileNameFromDialog = KFileDialog::getOpenFileName();
+    QFile file(fileNameFromDialog);
+    file.open(QIODevice::ReadOnly);
 
+    QDataStream in(&file);
 
+    view()->stop();
+    delete m_engine;
+    m_engine = new BlokEngine;
+    view()->setEngine(m_engine);
+
+    while (!in.atEnd())
+    {
+        qreal x, y, width, height;
+        QString texturePath;
+        in >> x >> y >> width >> height >> texturePath;
+
+        BlokItem *item = 0;
+        if (texturePath.contains("normal_block"))
+            item = new NormalBlok;
+        if (texturePath.contains("solid_block"))
+            item = new SolidBlok;
+        if (texturePath.contains("chimic_block"))
+            item = new ChimicBlok;
+        if (texturePath.contains("explode_block"))
+            item = new ExploseBlok;
+        item->resize(width, height);
+        item->setPosition(x, y);
+        item->texture()->scale(item->width(), item->height());
+        item->updateTransform();
+        m_engine->addItem(item);
+    }
+    file.close();
+    view()->updateGL();
+    m_engine->setMusic(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/sober.ogg");
+
+    view()->start();
+}
+
+void Mainwindow::loadLevels()
+{
 }

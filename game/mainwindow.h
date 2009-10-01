@@ -14,13 +14,18 @@
 
 class Mainwindow : public GluonMainWindow
 {
+Q_OBJECT
 public:
     Mainwindow(QWidget * parent = 0);
     ~Mainwindow() {
         delete m_engine;
     }
     void mousePressEvent(QMouseEvent * event);
+public slots:
+    void loadLevel();
+    void loadLevels();
 private:
+    void setupActions();
     BlokEngine * m_engine;
     BlokItem * bomb;
 };

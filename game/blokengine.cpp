@@ -3,10 +3,9 @@
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
-    m_ambianceSound=  new KALSound();
+    m_ambianceSound = new KALSound();
     m_backGround= new KGLBoxItem(20, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
-
 
     m_backGround->setPosition(-m_backGround->center());
     m_backGround->setTexture(m_backGroundPath);
@@ -20,30 +19,32 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground->setPosition(-10, -10);
     m_ground->setStatic();
 
+    QString spritesResourceDir, soundsResourceDir;
+    spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
+    soundsResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/";
+
+    m_emptyClickSound = new KALSound(soundsResourceDir + "empty-click.wav");
+    m_removeCLickSound = new KALSound(soundsResourceDir + "remove-click.ogg");
+
+    init();
+}
+
+void BlokEngine::init()
+{
+    QString spritesResourceDir, soundsResourceDir;
+    spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
+    soundsResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/";
 
     addItem(m_backGround);
     addItem(m_ground);
-
-    m_emptyClickSound = new KALSound("data/sounds/empty-click.wav");
-    m_removeCLickSound = new KALSound("data/sounds/remove-click.ogg");
-
-
-
-    setBackGround("data/sprites/sky_wallpaper.png");
-    setGround("data/sprites/green_ground.png");
-    setMusic("data/sounds/sober.ogg");
-
-
-    addItem(new SolidBlok());
-    addItem(new NormalBlok());
-    addItem(new ChimicBlok());
-    addItem(new ExploseBlok());
+    setBackGround(spritesResourceDir + "sky_wallpaper.png");
+    setGround(spritesResourceDir + "green_ground.png");
 }
-
-
 
 BlokEngine::~BlokEngine()
 {
+    m_ambianceSound->stop();
+    delete m_ambianceSound;
     delete m_ground;
     delete m_backGround;
     delete m_emptyClickSound;
@@ -59,13 +60,13 @@ void BlokEngine ::mainLoop(float ff)
 
 void BlokEngine::mousePress(QMouseEvent * event)
 {
-    KGLView * view  = qobject_cast<KGLView*>(parent());
+    KGLView *view  = qobject_cast<KGLView*>(parent());
     QPointF pos = view->mapToGL(event->pos());
 
     if ( event->button() == Qt::LeftButton)
     {
         KGLPhysicsItem * item = itemAt(pos) ;
-        if (item == NULL) { return;}
+        if (item == NULL) { kDebug() << "Nenhum item no cursor"; return;}
 
         BlokItem * blok = dynamic_cast<BlokItem*>(item);
         if (blok != NULL && blok->blokType() == BlokItem::Normal)

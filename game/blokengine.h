@@ -16,6 +16,7 @@ class BlokEngine : public KGLPhysicsEngine
 public:
     BlokEngine(KGLPhysicsEngine * parent = 0);
     ~BlokEngine();
+    void init();
     void setBackGround(const QString& path){
     m_backGroundPath = path;
     m_backGround->setTexture(path);

@@ -3,6 +3,9 @@
 #include <gluon/kgl/kglphysicsitem.h>
 #include <gluon/kal/kalsound.h>
 #include <gluon/kgl/kglparticlesitem.h>
+
+#include <KStandardDirs>
+
 #define LAYER_BEHIND 0
 #define LAYER_MIDDLE 1
 #define LAYER_END 2
@@ -22,10 +25,13 @@ public:
     BlokItem(float w = 1.5, float = 1.5, KGLEngine * parent = 0);
     ItemType blokType();
     void setBlokType(ItemType newType);
-
-
+    void resize(float w, float h);
+    float width() { return m_width; }
+    float height() { return m_height; }
 private:
     ItemType m_blokType;
+    float m_width;
+    float m_height;
 protected:
     void paintGL();
 
@@ -37,7 +43,7 @@ class NormalBlok : public BlokItem
 public:
     NormalBlok()
         :BlokItem(){
-        setTexture("data/sprites/normal_block.png");
+        setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/normal_block.png");
         setBlokType(Normal);
     }
 };
@@ -48,31 +54,31 @@ class SolidBlok : public BlokItem
 public:
     SolidBlok()
         :BlokItem(){
-        setTexture("data/sprites/solid_block.png");
+        setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/solid_block.png");
         setBlokType(Solid);
     }
 };
 
-//=========NORMAL BLOCK =======================
+//=========CHIMIC BLOCK =======================
 class ChimicBlok : public BlokItem
 {
 public:
     ChimicBlok()
         :BlokItem(){
-        setTexture("data/sprites/chimic_block.png");
+        setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/chimic_block.png");
         setBlokType(Chimic);
     }
 };
 
-//=========NORMAL BLOCK =======================
+//=========EXPLOSE BLOCK =======================
 class ExploseBlok : public BlokItem
 {
 public:
     ExploseBlok()
         :BlokItem(){
-        setTexture("data/sprites/explode_block.png");
+        setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/explode_block.png");
         setBlokType(Explode);
-        m_exploseSound=new KALSound("data/sounds/explosion.wav");
+        m_exploseSound=new KALSound(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/explosion.wav");
     }
     void explose(float Radius, float Force);
     KALSound * m_exploseSound;

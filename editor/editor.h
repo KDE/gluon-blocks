@@ -17,7 +17,6 @@ class Editor : public KXmlGuiWindow
 Q_OBJECT
 public:
     Editor(QWidget *parent=0);
-    void setupActions();
 private slots:
     void newFile();
     void openFile();
@@ -25,6 +24,7 @@ private slots:
     void saveFileAs();
     void saveFileAs(const QString &outputFileName);
 private:
+    void setupActions();
     EditorView *m_editorView;
     OptionsDock *m_optionsDock;
     QString m_currentFile;

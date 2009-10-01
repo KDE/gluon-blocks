@@ -1,4 +1,6 @@
 FILE(GLOB SPRITE_FILES "sprites/*.png")
 install(FILES ${SPRITE_FILES} DESTINATION ${DATA_INSTALL_DIR}/blokeditor/data/sprites/)
+install(FILES ${SPRITE_FILES} DESTINATION ${DATA_INSTALL_DIR}/blok/data/sprites/)
 FILE(GLOB SOUND_FILES "sounds/*.wav" "sounds/*.ogg")
 install(FILES ${SOUND_FILES} DESTINATION ${DATA_INSTALL_DIR}/blokeditor/data/sounds/)
+install(FILES ${SOUND_FILES} DESTINATION ${DATA_INSTALL_DIR}/blok/data/sounds/)
