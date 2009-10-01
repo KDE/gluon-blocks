@@ -39,15 +39,9 @@ void EditorView::initEngine()
 
     setCursor(QCursor(Qt::CrossCursor));
     updateGL();
-
-    initPropertiesMap();
     m_selectedItem = 0;
 }
 
-const QMap<QString, QWidget *> &EditorView::propertiesMap() const
-{
-    return m_propertiesMap;
-}
 
 void EditorView::setItemTexture(QString path)
 {
@@ -66,24 +60,6 @@ void EditorView::setGroundTexture(QString path)
     m_groundTexture = path;
     m_groundItem->setTexture(m_groundTexture);
     updateGL();
-}
-
-void EditorView::widthChanged(double value)
-{
-    if (m_selectedItem)
-    {
-        float width = m_selectedItem->width();
-        float height = m_selectedItem->height();
-        QDoubleSpinBox *spin = dynamic_cast<QDoubleSpinBox *>(sender());
-        if (spin->objectName() == "widthSpinBox")
-            width = value;
-        if (spin->objectName() == "heightSpinBox")
-            height = value;
-        m_selectedItem->resize(width, height);
-        m_selectedItem->texture()->setScale(width, height);
-        m_selectedItem->setColor(QColor(255, 255, 255, 100));
-        updateGL();
-    }
 }
 
 void EditorView::staticChanged(int value)
@@ -131,6 +107,8 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	    item->setPosition(mapToGL(event->pos())-item->center());
 	    item->updateTransform();
 	    m_engine->addItem(item);
+            m_blockList.append(item);
+            emit itemAdded();
 	    newSelectedItem = dynamic_cast<BlockItem *>(item);
 	}
 	if (m_selectedItem)
@@ -138,20 +116,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	newSelectedItem->setColor(QColor(255, 255, 255, 100));
 	m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
 	setCursor(QCursor(Qt::ClosedHandCursor));
-
-	initPropertiesMap();
-	QDoubleSpinBox *spinBox;
-	spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Width"]);
-	spinBox->setObjectName("widthSpinBox");
-	spinBox->setValue(m_selectedItem->width());
-        connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
-
-        spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Height"]);
-        spinBox->setObjectName("heightSpinBox");
-        spinBox->setValue(m_selectedItem->height());
-        connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
-
-        emit updateProperties(m_propertiesMap);
     }
     updateGL();
 }
@@ -168,14 +132,15 @@ void EditorView::wheelEvent(QWheelEvent*event)
     Q_UNUSED(event);
 }
 
-void EditorView::initPropertiesMap()
-{
-    QDoubleSpinBox *spinBox;
 
-    spinBox = new QDoubleSpinBox;
-    spinBox->setValue(1.0);
-    m_propertiesMap["Width"] = spinBox;
-    spinBox = new QDoubleSpinBox;
-    spinBox->setValue(1.0);
-    m_propertiesMap["Height"] = spinBox;
-}
+    void EditorView::setItemSize(const QSizeF& size)
+    {
+ if (m_selectedItem)
+    {
+        m_selectedItem->resize(size.width(), size.height());
+        m_selectedItem->texture()->setScale(size.width(), size.height());
+        m_selectedItem->setColor(QColor(255, 255, 255, 100));
+        m_selectedItem->updateTransform();
+       updateGL();
+    }
+    }

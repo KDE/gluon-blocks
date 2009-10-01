@@ -15,11 +15,11 @@
 #include "optionsdock.h"
 
 Editor::Editor(QWidget * parent)
-: KXmlGuiWindow(parent),
-  m_editorView (new EditorView),
-  m_optionsDock(new OptionsDock),
-  m_currentFile(QString())
+    : KXmlGuiWindow(parent),
+    m_editorView (new EditorView),
+    m_currentFile(QString())
 {
+    m_optionsDock= new OptionsDock(m_editorView);
     setCentralWidget(m_editorView);
     addDockWidget(Qt::LeftDockWidgetArea, m_optionsDock);
 
@@ -27,10 +27,10 @@ Editor::Editor(QWidget * parent)
 
     newFile();
 
-    connect(m_optionsDock, SIGNAL(itemTextureChanged(QString)), m_editorView, SLOT(setItemTexture(QString)));
-    connect(m_optionsDock, SIGNAL(wallpaperTextureChanged(QString)), m_editorView, SLOT(setWallpaperTexture(QString)));
-    connect(m_optionsDock, SIGNAL(groundTextureChanged(QString)), m_editorView, SLOT(setGroundTexture(QString)));
-    connect(m_editorView , SIGNAL(updateProperties(const QMap<QString, QWidget *>&)), m_optionsDock, SLOT(updateProperties(const QMap<QString, QWidget *>&)));
+//    connect(m_optionsDock, SIGNAL(itemTextureChanged(QString)), m_editorView, SLOT(setItemTexture(QString)));
+//    connect(m_optionsDock, SIGNAL(wallpaperTextureChanged(QString)), m_editorView, SLOT(setWallpaperTexture(QString)));
+//    connect(m_optionsDock, SIGNAL(groundTextureChanged(QString)), m_editorView, SLOT(setGroundTexture(QString)));
+//    connect(m_editorView , SIGNAL(updateProperties(const QMap<QString, QWidget *>&)), m_optionsDock, SLOT(updateProperties(const QMap<QString, QWidget *>&)));
 }
 
 void Editor::setupActions()
@@ -47,13 +47,16 @@ void Editor::setupActions()
     startAction->setIcon(KIcon("system-run"));
     actionCollection()->addAction("startengine", startAction);
     connect(startAction, SIGNAL(triggered()), m_editorView, SLOT(start()));
+    connect(startAction,SIGNAL(triggered(bool)),m_optionsDock,SLOT(setEnabled(bool)));
+    connect(startAction,SIGNAL(triggered(bool)),m_editorView,SLOT(setEnabled(bool)));
 
     KAction* stopAction = new KAction(this);
     stopAction->setText(i18n("Stop Engine"));
     stopAction->setIcon(KIcon("window-close"));
     actionCollection()->addAction("stopengine", stopAction);
     connect(stopAction, SIGNAL(triggered()), m_editorView, SLOT(stop()));
-
+    connect(stopAction,SIGNAL(triggered(bool)),m_optionsDock,SLOT(setDisabled(bool)));
+    connect(stopAction,SIGNAL(triggered(bool)),m_editorView,SLOT(setDisabled(bool)));
     setupGUI();
 }
 
@@ -63,8 +66,8 @@ void Editor::newFile()
     m_currentFile.clear();
     m_editorView->setWallpaperTexture(m_optionsDock->wallpaperTexturePath());
     m_editorView->setGroundTexture(m_optionsDock->groundTexturePath());
-    m_editorView->setItemTexture(m_optionsDock->itemTexturePath());
-    m_optionsDock->initPropertyEditor(m_editorView->propertiesMap());
+//    m_editorView->setItemTexture(m_optionsDock->itemTexturePath());
+//    m_optionsDock->initPropertyEditor(m_editorView->propertiesMap());
 }
 
 void Editor::openFile()
@@ -96,9 +99,9 @@ void Editor::openFile()
 void Editor::saveFile()
 {
     if(!m_currentFile.isEmpty())
-	saveFileAs(m_currentFile);
+        saveFileAs(m_currentFile);
     else
-	saveFileAs();
+        saveFileAs();
 }
 
 void Editor::saveFileAs()
@@ -117,13 +120,13 @@ void Editor::saveFileAs(const QString &outputFileName)
     foreach (KGLItemList itemList, m_editorView->engine()->items().values())
         foreach (KGLItem *item, itemList)
         {
-            if ((blockItem = dynamic_cast<BlockItem *>(item)))
-            {
-                out << blockItem->position().x() << item->position().y();
-                out << blockItem->boundingBox().width() << item->boundingBox().height();
-                out << blockItem->texturePath();
-            }
+        if ((blockItem = dynamic_cast<BlockItem *>(item)))
+        {
+            out << blockItem->position().x() << item->position().y();
+            out << blockItem->boundingBox().width() << item->boundingBox().height();
+            out << blockItem->texturePath();
         }
+    }
 
     file.close();
     m_currentFile = outputFileName;

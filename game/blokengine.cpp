@@ -26,6 +26,9 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_emptyClickSound = new KALSound(soundsResourceDir + "empty-click.wav");
     m_removeCLickSound = new KALSound(soundsResourceDir + "remove-click.ogg");
 
+    m_cursor = new KGLBoxItem(1,1);
+    m_cursor->setZIndex(4);
+    addItem(m_cursor);
     init();
 }
 
@@ -58,12 +61,9 @@ void BlokEngine ::mainLoop(float ff)
     KGLPhysicsEngine::mainLoop(ff);
 }
 
-void BlokEngine::mousePress(QMouseEvent * event)
+void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
 {
-    KGLView *view  = qobject_cast<KGLView*>(parent());
-    QPointF pos = view->mapToGL(event->pos());
-
-    if ( event->button() == Qt::LeftButton)
+    if ( button == Qt::LeftButton)
     {
         KGLPhysicsItem * item = itemAt(pos) ;
         if (item == NULL) { kDebug() << "Nenhum item no cursor"; return;}
@@ -88,3 +88,12 @@ void BlokEngine::mousePress(QMouseEvent * event)
     }
 }
 
+    void BlokEngine::mouseMoved(QPointF pos, Qt::MouseButton button)
+    {
+
+
+m_cursor->setPosition(pos);
+m_cursor->updateTransform();
+
+
+    }

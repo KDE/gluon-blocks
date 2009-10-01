@@ -3,7 +3,7 @@
 
 #include <QMouseEvent>
 #include <QWheelEvent>
-
+#include <QList>
 #include <gluon/kgl/kglview.h>
 
 class KGLPhysicsItem;
@@ -15,14 +15,20 @@ Q_OBJECT
 public:
     EditorView(QWidget * parent = 0);
     void initEngine();
-    const QMap<QString, QWidget *> &propertiesMap() const;
+    QList <BlockItem*> blockList(){
+        return m_blockList;
+        }
+    BlockItem * selectedItem(){
+        return m_selectedItem;
+    }
 signals:
     void updateProperties(const QMap<QString, QWidget *> &properties);
-public slots:
+    void itemAdded();
+public:
     void setItemTexture(QString path);
     void setWallpaperTexture(QString path);
     void setGroundTexture(QString path);
-    void widthChanged(double value);
+    void setItemSize(const QSizeF& size);
     void staticChanged(int value);
 protected:
     void mouseMoveEvent(QMouseEvent *event);
@@ -38,7 +44,7 @@ private:
     QString m_currentBlockTexture;
     QString m_wallpaperTexture;
     QString m_groundTexture;
-    QMap<QString, QWidget *> m_propertiesMap;
+    QList<BlockItem*> m_blockList;
     bool m_moving;
 };
 

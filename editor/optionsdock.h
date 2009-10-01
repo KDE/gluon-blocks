@@ -2,46 +2,50 @@
 #define OPTIONDOCK_H
 
 #include <QDockWidget>
-
+#include "editorview.h"
 class QTableWidget;
 class QListWidget;
 class QListWidgetItem;
 class QDoubleSpinBox;
 class QComboBox;
+class QToolButton;
+
 
 class OptionsDock : public QDockWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-    OptionsDock(QWidget * parent=0);
+    OptionsDock(EditorView * view, QWidget * parent=0);
     QString wallpaperTexturePath() const;
     QString groundTexturePath() const;
     QString itemTexturePath() const;
-    void initPropertyEditor(const QMap<QString, QWidget *> &propertiesMap);
-signals:
-    void itemTextureChanged(QString texturePath);
-    void wallpaperTextureChanged(QString texturePath);
-    void groundTextureChanged(QString texturePath);
-    void geometryChanged(double w, double h);
+
+
 protected:
-    void setupItemTree();
-    void setupCombo();
+    void setupCombo(); //setup wallpaper,ground and blocktype combo
+    void setupPropertyTable();//setup the propertyTable with all widget
+
+    //helpfull function to insert a custom widget inside the table
+    void insertPropertyWidget(const QString& name, QWidget * widget);
+    //retyrn the widget in the table by his name
+    QWidget * propertyWidget(const QString& name);
+
 protected slots:
-    void setCurrentItemTexture(QListWidgetItem *item);
-    void setWalpaperTexture(int index);
-    void setGroundTexture(int index);
-    void spinChanged(double value);
-    void updateProperties(const QMap<QString, QWidget *> &properties);
+    void setCurrentItemTexture(int index); //activate by m_itemTypeCombo
+    void setCurrentItemProperty(double value);//activate by all widgets inside Table.
+    void setWalpaperTexture(int index);//actiate by m_bkcombo
+    void setGroundTexture(int index);//activta by m_groundcombo
+
+    void refreshList();//refresh the block list of the editorView
+
 private:
     QTableWidget *m_propertiesTableWidget;
-    QListWidget *m_blokTypesListWidget;
+    QListWidget *m_blokListWidget;
     QComboBox *m_bkgroundCombo;
     QComboBox *m_groundCombo;
-    QString m_currentItemPath;
-    QDoubleSpinBox *m_spinW;
-    QDoubleSpinBox *m_spinH;
-    QDoubleSpinBox *m_angle;
-    
+    QComboBox *m_itemTypeCombo;
+    EditorView * m_editorView; //point to the view
+    QToolButton * m_delButton;
     enum BlockTypeRoles {TexturePathRole = Qt::UserRole};
 };
 

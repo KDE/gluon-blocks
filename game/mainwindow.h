@@ -20,7 +20,8 @@ public:
     ~Mainwindow() {
         delete m_engine;
     }
-    void mousePressEvent(QMouseEvent * event);
+
+
 public slots:
     void loadLevel();
     void loadLevels();
@@ -28,6 +29,7 @@ private:
     void setupActions();
     BlokEngine * m_engine;
     BlokItem * bomb;
+
 };
 
 #endif // MAINWINDOW_H
