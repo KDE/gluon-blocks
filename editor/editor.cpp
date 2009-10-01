@@ -82,13 +82,11 @@ void Editor::openFile()
         QString texturePath;
         in >> x >> y >> width >> height >> texturePath;
 
-        BlockItem *item = new BlockItem(1, 1);
-        item->resize(width, height);
+        BlockItem *item = new BlockItem(width, height);
         item->setTexture(texturePath);
         item->setPosition(x, y);
         item->updateTransform();
-        (dynamic_cast<KGLPhysicsEngine *>(m_editorView->engine()))->addItem(item);
-        kDebug() << "Agora a engine tem " << m_editorView->engine()->itemsCount();
+        qobject_cast<KGLPhysicsEngine*>(m_editorView->engine())->addItem(item);
     }
     file.close();
 
@@ -130,3 +128,4 @@ void Editor::saveFileAs(const QString &outputFileName)
     file.close();
     m_currentFile = outputFileName;
 }
+
