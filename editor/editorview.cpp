@@ -8,10 +8,10 @@
 #include "blockitem.h"
 
 EditorView::EditorView(QWidget * parent)
-: KGLView(parent),
-  m_engine(0),
-  m_selectedItem(0),
-  m_moving(false)
+    : KGLView(parent),
+    m_engine(0),
+    m_selectedItem(0),
+    m_moving(false)
 {
     grabMouse();
     setMouseTracking(true);
@@ -20,6 +20,7 @@ EditorView::EditorView(QWidget * parent)
 
 void EditorView::initEngine()
 {
+    stop();
     delete m_engine;
     m_engine = new KGLPhysicsEngine;
     setEngine(m_engine);
@@ -38,6 +39,7 @@ void EditorView::initEngine()
 
     setCursor(QCursor(Qt::CrossCursor));
     updateGL();
+
     initPropertiesMap();
     m_selectedItem = 0;
 }
@@ -70,17 +72,17 @@ void EditorView::widthChanged(double value)
 {
     if (m_selectedItem)
     {
-	float width = m_selectedItem->width();
-	float height = m_selectedItem->height();
-	QDoubleSpinBox *spin = dynamic_cast<QDoubleSpinBox *>(sender());
-	if (spin->objectName() == "widthSpinBox")
-	    width = value;
-	if (spin->objectName() == "heightSpinBox")
-	    height = value;
-	m_selectedItem->resize(width, height);
-	m_selectedItem->texture()->setScale(width, height);
-	m_selectedItem->setColor(QColor(255, 255, 255, 100));
-	updateGL();
+        float width = m_selectedItem->width();
+        float height = m_selectedItem->height();
+        QDoubleSpinBox *spin = dynamic_cast<QDoubleSpinBox *>(sender());
+        if (spin->objectName() == "widthSpinBox")
+            width = value;
+        if (spin->objectName() == "heightSpinBox")
+            height = value;
+        m_selectedItem->resize(width, height);
+        m_selectedItem->texture()->setScale(width, height);
+        m_selectedItem->setColor(QColor(255, 255, 255, 100));
+        updateGL();
     }
 }
 
@@ -94,19 +96,19 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_moving)
     {
-	m_selectedItem->setPosition(mapToGL(event->pos())-m_selectedItem->center());
-	m_selectedItem->updateTransform();
-	m_engine->world()->DestroyBody(m_selectedItem->body());
-	m_selectedItem->setup(m_engine->world());
+        m_selectedItem->setPosition(mapToGL(event->pos())-m_selectedItem->center());
+        m_selectedItem->updateTransform();
+        m_engine->world()->DestroyBody(m_selectedItem->body());
+        m_selectedItem->setup(m_engine->world());
     }
     else
     {
-	QPointF pos = mapToGL(event->pos());
-	KGLPhysicsItem *item = m_engine->itemAt(pos);
-	if (item)
-	    setCursor(QCursor(Qt::OpenHandCursor));
-	else
-	    setCursor(QCursor(Qt::CrossCursor));
+        QPointF pos = mapToGL(event->pos());
+        KGLPhysicsItem *item = m_engine->itemAt(pos);
+        if (item)
+            setCursor(QCursor(Qt::OpenHandCursor));
+        else
+            setCursor(QCursor(Qt::CrossCursor));
     }
 
     updateGL();
@@ -116,41 +118,41 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-	QPointF pos = mapToGL(event->pos());
-	KGLPhysicsItem *newSelectedItem = m_engine->itemAt(pos);
-	if (newSelectedItem)
-	{
-	    m_moving = true;
-	}
-	else
-	{
-	    BlockItem *item = new BlockItem(1, 1);
+        QPointF pos = mapToGL(event->pos());
+        KGLPhysicsItem *newSelectedItem = m_engine->itemAt(pos);
+        if (newSelectedItem)
+        {
+            m_moving = true;
+        }
+        else
+        {
+            BlockItem *item = new BlockItem(1, 1);
             item->setTexture(m_currentBlockTexture);
-	    item->texture()->setScale(item->width(), item->height());
-	    item->setPosition(mapToGL(event->pos())-item->center());
-	    item->updateTransform();
-	    m_engine->addItem(item);
-	    newSelectedItem = dynamic_cast<BlockItem *>(item);
-	}
-	if (m_selectedItem)
-	    m_selectedItem->setColor(QColor(255, 255, 255, 255));
-	newSelectedItem->setColor(QColor(255, 255, 255, 100));
-	m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
-	setCursor(QCursor(Qt::ClosedHandCursor));
+            item->texture()->setScale(item->width(), item->height());
+            item->setPosition(mapToGL(event->pos())-item->center());
+            item->updateTransform();
+            m_engine->addItem(item);
+            newSelectedItem = dynamic_cast<BlockItem *>(item);
+        }
+        if (m_selectedItem)
+            m_selectedItem->setColor(QColor(255, 255, 255, 255));
+        newSelectedItem->setColor(QColor(255, 255, 255, 100));
+        m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
+        setCursor(QCursor(Qt::ClosedHandCursor));
 
-	initPropertiesMap();
-	QDoubleSpinBox *spinBox;
-	spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Width"]);
-	spinBox->setObjectName("widthSpinBox");
-	spinBox->setValue(m_selectedItem->width());
+        initPropertiesMap();
+        QDoubleSpinBox *spinBox;
+        spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Width"]);
+        spinBox->setObjectName("widthSpinBox");
+        spinBox->setValue(m_selectedItem->width());
         connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
 
-	spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Height"]);
-	spinBox->setObjectName("heightSpinBox");
-	spinBox->setValue(m_selectedItem->height());
+        spinBox = dynamic_cast<QDoubleSpinBox *>(m_propertiesMap["Height"]);
+        spinBox->setObjectName("heightSpinBox");
+        spinBox->setValue(m_selectedItem->height());
         connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(widthChanged(double)));
 
-	emit updateProperties(m_propertiesMap);
+        emit updateProperties(m_propertiesMap);
     }
     updateGL();
 }

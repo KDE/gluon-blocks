@@ -82,13 +82,13 @@ void Editor::openFile()
         QImage texture;
         in >> x >> y >> width >> height >> texture;
 
-        BlockItem *item = new BlockItem(1, 1);
-        item->resize(width, height);
+        BlockItem *item = new BlockItem(width, height);
         item->setTexture(texture);
         item->texture()->setScale(item->width(), item->height());
         item->setPosition(x, y);
+        item->setStatic(false);
         item->updateTransform();
-        m_editorView->engine()->addItem(item);
+        qobject_cast<KGLPhysicsEngine*>(m_editorView->engine())->addItem(item);
         kDebug() << "Agora a engine tem " << m_editorView->engine()->itemsCount();
     }
     file.close();
