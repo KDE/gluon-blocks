@@ -28,6 +28,9 @@ void Mainwindow::setupActions()
     actionCollection()->addAction("loadLevels", loadLevelsAction);
     connect(loadLevelsAction, SIGNAL(triggered()), this, SLOT(loadLevels()));
 
+    KStandardAction::fullScreen(view(), SLOT(setFullscreen(bool)), this, actionCollection());
+    KStandardAction::quit(this, SLOT(close()), actionCollection());
+    
     setupGUI();
 }
 
