@@ -85,6 +85,14 @@ BlokEngine::~BlokEngine()
 void BlokEngine ::mainLoop(float ff)
 {
     KGLPhysicsEngine::mainLoop(ff);
+
+foreach ( BlokItem * item, m_blokList)
+    {
+    if ( item->remove()==true)
+    {
+ remBlok(item);
+    }
+}
 }
 
 void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
@@ -106,15 +114,29 @@ void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
             return;
         }
 
-        if (blok != NULL && blok->blokType() == BlokItem::Explode)
+        if ( blok->blokType() == BlokItem::Explode)
         {
-            dynamic_cast<ExploseBlok*>(blok)->explose(10,5);
-            removeItem(item);
-            return;
+        blok->explose(10,20);
         }
+
+
+
+
+
 
         else m_emptyClickSound->play();
 
     }
 }
 
+void BlokEngine::addBlok(BlokItem * item)
+{
+    addItem(item);
+    m_blokList.append(item);
+}
+void BlokEngine::remBlok(BlokItem * item)
+{
+    removeItem(item);
+    m_blokList.removeOne(item);
+
+}

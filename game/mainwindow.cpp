@@ -71,7 +71,7 @@ void Mainwindow::loadLevel()
         item->setPosition(x, y);
         item->texture()->setScale(item->width(), item->height());
         item->updateTransform();
-        m_engine->addItem(item);
+        m_engine->addBlok(item);
     }
     file.close();
     view()->updateGL();

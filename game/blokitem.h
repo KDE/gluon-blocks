@@ -28,10 +28,22 @@ public:
     void resize(float w, float h);
     float width() { return m_width; }
     float height() { return m_height; }
+    bool remove(){
+        return m_willRemove;
+    }
+
+    void setRemove(bool r){
+        m_willRemove=r;
+    }
+    void explose(float Radius, float Force);
+
 private:
     ItemType m_blokType;
     float m_width;
     float m_height;
+    bool m_willRemove;
+    KALSound * m_exploseSound;
+
 protected:
     void paintGL();
 
@@ -70,11 +82,12 @@ public:
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/chimic_block.png");
         setBlokType(Chimic);
         setObjectName("CHIMIC_BLOCK");
-        m_exploseSound=new KALSound(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/explosion.wav");
+        setRemove(false);
+
     }
-    void explose(float Radius, float Force);
+
     void collidesWithItem(KGLPhysicsItem * item);
-    KALSound * m_exploseSound;
+
 };
 
 //=========EXPLOSE BLOCK =======================
@@ -86,10 +99,8 @@ public:
         setTexture(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/explode_block.png");
         setBlokType(Explode);
         setObjectName("EXPLOSE_BLOCK");
-        m_exploseSound=new KALSound(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/explosion.wav");
     }
-    void explose(float Radius, float Force);
-    KALSound * m_exploseSound;
+
 };
 
 //=========EXPLOSE BLOCK =======================

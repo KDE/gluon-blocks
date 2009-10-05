@@ -19,6 +19,8 @@ public:
     BlokEngine(KGLPhysicsEngine * parent = 0);
     ~BlokEngine();
     void init();
+    void addBlok(BlokItem * item);
+    void remBlok(BlokItem * item);
     void setBackGround(const QString& path){
     m_backGroundPath = path;
     m_backGround->setTexture(path);
@@ -52,6 +54,7 @@ private:
     KGLPhysicsItem * m_wallLeft;
     KGLPhysicsItem * m_wallRight;
      KGLPhysicsItem * m_wallTop;
+     QList <BlokItem*> m_blokList;
 
 
 };
