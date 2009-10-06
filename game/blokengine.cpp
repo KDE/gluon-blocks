@@ -9,7 +9,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
 
     m_backGround->setPosition(-m_backGround->center());
-    m_backGround->setTexture(m_backGroundPath);
+
     m_backGround->updateTransform();
     m_backGround->setZIndex(LAYER_BEHIND);
 

@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <gluon/kgl/kglview.h>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
-    :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
+        :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
 {
     createBox(w,h);
     setZIndex(LAYER_MIDDLE);
@@ -30,26 +30,29 @@ void BlokItem::resize(float w, float h)
 void BlokItem::paintGL()
 {
     KGLPhysicsItem::paintGL();
-    glPushMatrix();
-    glLoadMatrixd(matrix().data());
-    glEnable( GL_LINE_SMOOTH );
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glLineWidth(2);
-    glBegin(GL_LINE_LOOP);
-    glColor3d(0,0,0);
 
-    glVertex2d(boundingBox().bottomLeft().x(),boundingBox().bottomLeft().y());
-    glVertex2d(boundingBox().bottomRight().x(),boundingBox().bottomRight().y());
-    glVertex2d(boundingBox().topRight().x(),boundingBox().topRight().y());
-    glVertex2d(boundingBox().topLeft().x(),boundingBox().topLeft().y());
+    if ( objectName() != "TOTEM_BLOCK")
+    {
+        glPushMatrix();
+        glLoadMatrixd(matrix().data());
+        glEnable( GL_LINE_SMOOTH );
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glLineWidth(2);
+        glBegin(GL_LINE_LOOP);
+        glColor3d(0,0,0);
+
+        glVertex2d(boundingBox().bottomLeft().x(),boundingBox().bottomLeft().y());
+        glVertex2d(boundingBox().bottomRight().x(),boundingBox().bottomRight().y());
+        glVertex2d(boundingBox().topRight().x(),boundingBox().topRight().y());
+        glVertex2d(boundingBox().topLeft().x(),boundingBox().topLeft().y());
 
 
-    glEnd();
+        glEnd();
 
-    glPopMatrix();
-
+        glPopMatrix();
+    }
 
 }
 
