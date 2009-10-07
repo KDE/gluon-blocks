@@ -36,6 +36,7 @@ public Q_SLOTS:
     void setCurrentItemProperty(double value);//activate by all widgets inside Table.
     void setWalpaperTexture(int index);//actiate by m_bkcombo
     void setGroundTexture(int index);//activta by m_groundcombo
+    void staticChanged(int value);
     void removeItem();
     void setSelectedItem(int id);
 

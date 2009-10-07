@@ -11,7 +11,9 @@ EditorView::EditorView(QWidget * parent)
     : KGLView(parent),
     m_engine(0),
     m_selectedItem(0),
-    m_moving(false)
+    m_moving(false),
+    m_grid(true),
+    m_gridSize(1)
 {
     grabMouse();
     setMouseTracking(true);
@@ -20,7 +22,6 @@ EditorView::EditorView(QWidget * parent)
     m_wallPaperItem = new KGLBoxItem(20, 20);
     m_groundItem = new KGLPhysicsItem;
     initEngine();
-
 }
 EditorView::~EditorView(){
     delete m_groundItem;
@@ -29,6 +30,33 @@ EditorView::~EditorView(){
 
 
 }
+
+void EditorView::paintGL()
+{
+    KGLView::paintGL();
+    if (m_grid)
+    {
+            glPushMatrix();
+            glBegin(GL_LINES);
+            glColor3ub(200, 200, 200);
+
+            int x, y;
+            for (x = -10; x <= 10; x+=m_gridSize)
+            {
+                glVertex2d(x, -10);
+                glVertex2d(x, 10);
+            }
+            for (y = -10; y <= 10; y+=m_gridSize)
+            {
+                glVertex2d(-10, y);
+                glVertex2d(10, y);
+            }
+
+            glEnd();
+            glPopMatrix();
+    }
+}
+
 void EditorView::initEngine()
 {
     stop();
@@ -68,12 +96,6 @@ void EditorView::setGroundTexture(QString path)
     updateGL();
 }
 
-void EditorView::staticChanged(int value)
-{
-    if (m_selectedItem)
-        m_selectedItem->setStatic((value == Qt::Checked) ? true:false);
-}
-
 void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_moving)
@@ -106,8 +128,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
         if (newSelectedItem)
         {
             m_moving = true;
-            emit itemSelected(m_blockList.indexOf(dynamic_cast<BlockItem*>(newSelectedItem)));
-
         }
         else
         {
@@ -122,11 +142,13 @@ void EditorView::mousePressEvent(QMouseEvent *event)
         }
         if (m_selectedItem)
             m_selectedItem->setColor(QColor(255, 255, 255, 255));
+        
         newSelectedItem->setColor(QColor(255, 255, 255, 100));
         m_selectedItem = dynamic_cast<BlockItem *>(newSelectedItem);
+        updateGL();
+        emit itemSelected(m_blockList.indexOf(m_selectedItem));
         setCursor(QCursor(Qt::ClosedHandCursor));
     }
-    updateGL();
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
@@ -168,4 +190,16 @@ void EditorView::removeAll()
     m_blockList.clear();
 
 
+}
+
+void EditorView::enableGrid(int enabled)
+{
+    m_grid = (enabled == Qt::Checked) ? true:false;
+    updateGL();
+}
+
+void EditorView::updateGridSize(int size)
+{
+    m_gridSize = size;
+    updateGL();
 }

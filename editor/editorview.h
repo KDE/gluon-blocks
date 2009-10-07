@@ -32,14 +32,16 @@ public:
     void setWallpaperTexture(QString path);
     void setGroundTexture(QString path);
     void setItemSize(const QSizeF& size);
-    void staticChanged(int value);
     void removeBlock(BlockItem * item);
-
+public slots:
+    void enableGrid(int enabled);
+    void updateGridSize(int size);
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void paintGL();
 private:
     void initPropertiesMap();
     KGLPhysicsEngine *m_engine;
@@ -51,6 +53,8 @@ private:
     QString m_groundTexture;
     QList<BlockItem*> m_blockList;
     bool m_moving;
+    bool m_grid;
+    int m_gridSize;
 };
 
 #endif // BLOCKENGINE_H

@@ -6,6 +6,7 @@
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QCheckBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -37,11 +38,22 @@ OptionsDock::OptionsDock(EditorView * view,QWidget * parent)
     QHBoxLayout *groundLayout = new QHBoxLayout;
     groundLayout->addWidget(groundLabel);
     groundLayout->addWidget(m_groundCombo);
-    
+
+    QCheckBox *gridCheckBox = new QCheckBox;
+    gridCheckBox->setChecked(true);
+    gridCheckBox->setText(i18n("Show grid"));
+    QSlider *gridSizeSlider = new QSlider;
+    gridSizeSlider->setRange(1, 5);
+    gridSizeSlider->setOrientation(Qt::Horizontal);
+    QHBoxLayout *gridLayout = new QHBoxLayout;
+    gridLayout->addWidget(gridCheckBox);
+    gridLayout->addWidget(gridSizeSlider);
+
     QGroupBox *globalPropertiesGroupBox = new QGroupBox(i18n("Global Properties"));
     QVBoxLayout *propertiesLayout = new QVBoxLayout;
     propertiesLayout->addLayout(bkgroundLayout);
     propertiesLayout->addLayout(groundLayout);
+    propertiesLayout->addLayout(gridLayout);
     globalPropertiesGroupBox->setLayout(propertiesLayout);
     
     m_propertiesTableWidget = new QTableWidget(1, 2);
@@ -92,11 +104,9 @@ OptionsDock::OptionsDock(EditorView * view,QWidget * parent)
     connect(m_itemTypeCombo,SIGNAL(currentIndexChanged(int)),this,SLOT(setCurrentItemTexture(int)));
     connect(m_editorView,SIGNAL(itemAdded()),this,SLOT(refreshList()));
     connect(m_delButton,SIGNAL(clicked()),this,SLOT(removeItem()));
-    connect(m_editorView,SIGNAL(itemSelected(int)),this,SLOT(setSelectedItem(int)));
-
-
-
-    
+    connect(m_editorView,SIGNAL(itemSelected(int)),this,SLOT(setSelectedItem(int)), Qt::QueuedConnection);
+    connect(gridCheckBox, SIGNAL(stateChanged(int)), m_editorView, SLOT(enableGrid(int)));
+    connect(gridSizeSlider, SIGNAL(valueChanged(int)), m_editorView, SLOT(updateGridSize(int)));
 }
 OptionsDock::~OptionsDock()
 {
@@ -162,14 +172,16 @@ void OptionsDock::setupPropertyTable()
 {
     QDoubleSpinBox * spinW = new QDoubleSpinBox;
     QDoubleSpinBox * spinH = new QDoubleSpinBox;
+    QCheckBox * staticCBox = new QCheckBox;
     spinW->setMinimum(1);
     spinH->setMinimum(1);
     insertPropertyWidget("width",spinH);
     insertPropertyWidget("height",spinW);
-    insertPropertyWidget("static",new QSpinBox);
+    insertPropertyWidget("static", staticCBox);
 
-    connect(spinH,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)));
-    connect(spinW,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)));
+    connect(spinH,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)), Qt::QueuedConnection);
+    connect(spinW,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)), Qt::QueuedConnection);
+    connect(staticCBox,SIGNAL(stateChanged(int)),this,SLOT(staticChanged(int)), Qt::QueuedConnection);
 }
 
 void OptionsDock::setCurrentItemTexture(int index)
@@ -220,13 +232,22 @@ QWidget * OptionsDock::propertyWidget(const QString& name)
 }
 void OptionsDock::setCurrentItemProperty(double value)
 {
-
-    Q_UNUSED(value)
-            float w = qobject_cast<QDoubleSpinBox*>(propertyWidget("width"))->value();
+    Q_UNUSED(value);
+    float w = qobject_cast<QDoubleSpinBox*>(propertyWidget("width"))->value();
     float h = qobject_cast<QDoubleSpinBox*>(propertyWidget("height"))->value();
 
     m_editorView->setItemSize(QSizeF(w,h));
 }
+
+void OptionsDock::staticChanged(int value)
+{
+    if (m_editorView->selectedItem())
+    {
+        kDebug() << "Mudando estatic para " << value << " == " << Qt::Checked;
+        m_editorView->selectedItem()->setStatic((value == Qt::Checked) ? true:false);
+    }
+}
+
 void OptionsDock::removeItem()
 {
 
@@ -240,4 +261,6 @@ void OptionsDock::removeItem()
 void OptionsDock::setSelectedItem(int id)
 {
     m_blokListWidget->setCurrentRow(id);
+    (qobject_cast<QDoubleSpinBox *>(propertyWidget("width")))->setValue(m_editorView->blockList().at(id)->width());
+    (qobject_cast<QDoubleSpinBox *>(propertyWidget("height")))->setValue(m_editorView->blockList().at(id)->height());
 }
