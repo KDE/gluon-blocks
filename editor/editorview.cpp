@@ -100,7 +100,13 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_moving)
     {
-        m_selectedItem->setPosition(mapToGL(event->pos())-m_selectedItem->center());
+        QPointF newPos = mapToGL(event->pos()-m_selectedItem->center());
+        if (m_grid)
+        {
+            newPos /= m_gridSize;
+            newPos = newPos.toPoint() * m_gridSize;
+        }
+        m_selectedItem->setPosition(newPos);
         m_selectedItem->updateTransform();
         m_engine->world()->DestroyBody(m_selectedItem->body());
         m_selectedItem->setup(m_engine->world());
@@ -133,7 +139,13 @@ void EditorView::mousePressEvent(QMouseEvent *event)
         {
             BlockItem *item = new BlockItem(1, 1);
             item->setTexture(m_currentBlockTexture);
-            item->setPosition(mapToGL(event->pos())-item->center());
+            QPointF position = mapToGL(event->pos()-item->center());
+            if (m_grid)
+            {
+                position /= m_gridSize;
+                position = position.toPoint() * m_gridSize;
+            }
+            item->setPosition(position);
             item->updateTransform();
             m_engine->addItem(item);
             m_blockList.append(item);
