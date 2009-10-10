@@ -33,7 +33,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    KAboutData aboutData("blok", "blok",
+    KAboutData aboutData("blok", NULL,
                          ki18n("Blok"), "1.0",
                          ki18n("blok"),
                          KAboutData::License_GPL,
