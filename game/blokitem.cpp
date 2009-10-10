@@ -121,7 +121,7 @@ void TotemBlok::collidesWithItem(KGLPhysicsItem * item)
     if ( item->objectName() == "GROUND_OBJECT")
     {
         setColor(Qt::red);
-        QMessageBox::information(0, i18n("you lost"), i18n("the totem has touch the floor...sorry"));
+        QMessageBox::information(0, i18n("You Lost"), i18n("The totem has touched the floor...sorry"));
         KGLEngine * engine = qobject_cast<KGLEngine*>(parent());
         KGLView * view = qobject_cast<KGLView*>(engine->parent());
         view->stop();

@@ -111,7 +111,7 @@ void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
             m_removeCLickSound->play();
 
             if ( m_nbNormalBlock<=1)
-                QMessageBox::information(0, i18n("you win"), i18n("you destroy all normal item!!"));
+                QMessageBox::information(0, i18n("You Win"), i18n("You destroyed all normal items!!"));
             return;
         }
 
