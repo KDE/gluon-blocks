@@ -1,6 +1,7 @@
 #include "blokitem.h"
 #include <gluon/kgl/kglboxitem.h>
 #include <QMessageBox>
+#include <KLocale>
 #include <gluon/kgl/kglview.h>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
         :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
@@ -120,7 +121,7 @@ void TotemBlok::collidesWithItem(KGLPhysicsItem * item)
     if ( item->objectName() == "GROUND_OBJECT")
     {
         setColor(Qt::red);
-        QMessageBox::information(0,"you lost","the totem has touch the floor...sorry");
+        QMessageBox::information(0, i18n("you lost"), i18n("the totem has touch the floor...sorry"));
         KGLEngine * engine = qobject_cast<KGLEngine*>(parent());
         KGLView * view = qobject_cast<KGLView*>(engine->parent());
         view->stop();
