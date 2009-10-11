@@ -38,6 +38,9 @@ void Mainwindow::setupActions()
 void Mainwindow::loadLevel()
 {
     QString fileNameFromDialog = KFileDialog::getOpenFileName();
+    if (fileNameFromDialog.isEmpty())
+        return;
+    
     QFile file(fileNameFromDialog);
     file.open(QIODevice::ReadOnly);
 
