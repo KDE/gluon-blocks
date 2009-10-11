@@ -23,7 +23,7 @@
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
-#include <KURL>
+#include <KUrl>
 
 #include "mainwindow.h"
 
