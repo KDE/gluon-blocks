@@ -96,7 +96,7 @@ foreach ( BlokItem * item, m_blokList)
 }
 }
 
-void BlokEngine::mousePressed(QPointF pos, Qt::MouseButton button)
+void BlokEngine::mousePressed(const QPointF &pos, Qt::MouseButton button)
 {
     if ( button == Qt::LeftButton)
     {

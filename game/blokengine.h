@@ -41,7 +41,7 @@ m_ambianceSound->setLoop(true);
     int m_nbNormalBlock;
 
 protected:
-    void mousePressed(QPointF pos, Qt::MouseButton button);
+    void mousePressed(const QPointF &pos, Qt::MouseButton button);
 
 private:
     KGLBoxItem * m_backGround;
