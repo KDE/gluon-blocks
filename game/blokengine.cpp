@@ -2,13 +2,18 @@
 #include <gluon/kgl/kglview.h>
 #include <KLocale>
 #include <QMessageBox>
+#include <QApplication>
+#include <QDesktopWidget>
+
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
-    KALEngine::instance();
-
     m_ambianceSound = new KALSound();
-    m_backGround= new KGLBoxItem(20, 20);
+
+    QRect screenDim = QApplication::desktop()->screenGeometry();
+    double ratio = (double)screenDim.width()/screenDim.height();
+
+    m_backGround= new KGLBoxItem(20*ratio, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
 
     m_backGround->setPosition(-m_backGround->center());
@@ -16,19 +21,32 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     m_backGround->updateTransform();
     m_backGround->setZIndex(LAYER_BEHIND);
 
-    m_ground->createBox(20, 1);
+    m_ground->createBox(20*ratio, 1);
     m_ground->setZIndex(LAYER_BEHIND);
     m_ground->setTexture(m_groundPath);
     m_ground->texture()->scale(QPoint(1,1));
-    m_ground->setPosition(-10, -10);
+    m_ground->setPosition(-10*ratio, -10);
     m_ground->setStatic();
     m_ground->setObjectName("GROUND_OBJECT");
-
 
     m_wallLeft = new KGLPhysicsItem;
     m_wallRight = new KGLPhysicsItem;
     m_wallTop = new KGLPhysicsItem;
 
+    m_wallLeft->createBox(0.1,20);
+    m_wallLeft->setPosition(-10*ratio,-10);
+    m_wallLeft->updateTransform();
+    m_wallLeft->setStatic(true);
+
+    m_wallRight->createBox(0.1,20);
+    m_wallRight->setPosition((10*ratio)-0.1,-10);
+    m_wallRight->updateTransform();
+    m_wallRight->setStatic(true);
+
+    m_wallTop->createBox(20*ratio,0.1);
+    m_wallTop->setPosition(-10*ratio,9.9);
+    m_wallTop->updateTransform();
+    m_wallTop->setStatic(true);
 
     QString spritesResourceDir, soundsResourceDir;
     spritesResourceDir = KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/";
@@ -52,21 +70,6 @@ void BlokEngine::init()
     setBackGround(spritesResourceDir + "sky_wallpaper.png");
     setGround(spritesResourceDir + "green_ground.png");
 
-
-    m_wallLeft->createBox(0.1,20);
-    m_wallLeft->setPosition(-10,-10);
-    m_wallLeft->updateTransform();
-    m_wallLeft->setStatic(true);
-
-    m_wallRight->createBox(0.1,20);
-    m_wallRight->setPosition(9.9,-10);
-    m_wallRight->updateTransform();
-    m_wallRight->setStatic(true);
-
-    m_wallTop->createBox(20,0.1);
-    m_wallTop->setPosition(-10,9.9);
-    m_wallTop->updateTransform();
-    m_wallTop->setStatic(true);
 
     addItem(m_wallLeft);
     addItem(m_wallRight);
