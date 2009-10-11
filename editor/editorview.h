@@ -56,6 +56,7 @@ private:
     bool m_moving;
     bool m_grid;
     int m_gridSize;
+    double m_ratio;
 };
 
 #endif // BLOCKENGINE_H

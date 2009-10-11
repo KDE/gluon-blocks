@@ -3,6 +3,8 @@
 #include <QCursor>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include <gluon/kgl/kglphysicsengine.h>
 #include "blockitem.h"
@@ -17,18 +19,21 @@ EditorView::EditorView(QWidget * parent)
 {
     grabMouse();
     setMouseTracking(true);
+
+    QRect screenDim = QApplication::desktop()->screenGeometry();
+    m_ratio = (double)screenDim.width()/screenDim.height();
+
     m_engine= new KGLPhysicsEngine;
     setEngine(m_engine);
-    m_wallPaperItem = new KGLBoxItem(20, 20);
+    m_wallPaperItem = new KGLBoxItem(20*m_ratio, 20);
     m_groundItem = new KGLPhysicsItem;
     initEngine();
 }
+
 EditorView::~EditorView(){
     delete m_groundItem;
     delete m_wallPaperItem;
     delete m_selectedItem;
-
-
 }
 
 void EditorView::paintGL()
@@ -41,15 +46,15 @@ void EditorView::paintGL()
             glColor3ub(200, 200, 200);
 
             int x, y;
-            for (x = -10; x <= 10; x+=m_gridSize)
+            for (x = -10*m_ratio; x <= 10*m_ratio; x+=m_gridSize)
             {
                 glVertex2d(x, -10);
                 glVertex2d(x, 10);
             }
             for (y = -10; y <= 10; y+=m_gridSize)
             {
-                glVertex2d(-10, y);
-                glVertex2d(10, y);
+                glVertex2d(-10*m_ratio, y);
+                glVertex2d(10*m_ratio, y);
             }
 
             glEnd();
@@ -61,11 +66,11 @@ void EditorView::initEngine()
 {
     stop();
     removeAll();
-    m_wallPaperItem->setPosition(-10, -10);
+    m_wallPaperItem->setPosition(-10*m_ratio, -10);
     m_wallPaperItem->updateTransform();
     m_engine->addItem(m_wallPaperItem);
-    m_groundItem->createBox(20, 1);
-    m_groundItem->setPosition(-10, -10);
+    m_groundItem->createBox(20*m_ratio, 1);
+    m_groundItem->setPosition(-10*m_ratio, -10);
     m_groundItem->updateTransform();
     m_groundItem->setStatic(true);
     m_engine->addItem(m_groundItem);
