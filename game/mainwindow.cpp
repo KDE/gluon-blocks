@@ -33,15 +33,9 @@ void Mainwindow::setupActions()
 }
 
 
-
-
-void Mainwindow::loadLevel()
+void Mainwindow::loadLevel(const QString &fileName)
 {
-    QString fileNameFromDialog = KFileDialog::getOpenFileName();
-    if (fileNameFromDialog.isEmpty())
-        return;
-    
-    QFile file(fileNameFromDialog);
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly);
 
     QDataStream in(&file);
@@ -82,6 +76,14 @@ void Mainwindow::loadLevel()
     m_engine->setMusic(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/sober.ogg");
 
     view()->start();
+}
+
+void Mainwindow::loadLevel()
+{
+    QString fileNameFromDialog = KFileDialog::getOpenFileName();
+    if (fileNameFromDialog.isEmpty())
+        return;
+    loadLevel(fileNameFromDialog);
 }
 
 void Mainwindow::loadLevels()

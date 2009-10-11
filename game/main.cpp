@@ -23,6 +23,7 @@
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
+#include <KURL>
 
 #include "mainwindow.h"
 
@@ -40,12 +41,18 @@ int main(int argc, char *argv[])
                          ki18n("Copyright (c) 2009 Developer"));
     KCmdLineArgs::init(argc, argv, &aboutData);
 
+    KCmdLineOptions options;
+    options.add("+[URL]", ki18n("Level to open"));
+    KCmdLineArgs::addCmdLineOptions(options);
+
     KApplication app;
 
-
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
     Mainwindow * main = new Mainwindow;
 
+    if (args->count() && args->url(0).isLocalFile())
+        main->loadLevel(args->url(0).toLocalFile());
 
     main->show();
 

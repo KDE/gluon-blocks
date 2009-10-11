@@ -21,6 +21,7 @@ public:
         delete m_engine;
     }
 
+    void loadLevel(const QString &fileName);
 
 public slots:
     void loadLevel();
