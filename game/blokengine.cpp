@@ -5,6 +5,8 @@
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
+    KALEngine::instance();
+
     m_ambianceSound = new KALSound();
     m_backGround= new KGLBoxItem(20, 20);
     m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
