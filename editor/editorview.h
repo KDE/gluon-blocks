@@ -7,6 +7,7 @@
 #include <gluon/kgl/kglview.h>
 
 class KGLPhysicsItem;
+class KGLPhysicsEngine;
 class BlockItem;
 
 class EditorView : public KGLView

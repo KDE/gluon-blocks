@@ -6,6 +6,7 @@
 #include <gluon/kal/kalengine.h>
 #include <gluon/kal/kalsound.h>
 #include <gluon/kgl/kglparticlesitem.h>
+#include <gluon/kgl/kglboxitem.h>
 
 #include "blokitem.h"
 
