@@ -15,7 +15,7 @@ BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     double ratio = (double)screenDim.width()/screenDim.height();
 
     m_backGround= new KGLBoxItem(20*ratio, 20);
-    m_ground = new KGLPhysicsItem(KGLPhysicsItem::PolygonShape,this);
+    m_ground = new KGLPhysicsItem(this, KGLPhysicsItem::PolygonShape);
 
     m_backGround->setPosition(-m_backGround->center());
 

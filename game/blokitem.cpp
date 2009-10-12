@@ -4,7 +4,7 @@
 #include <KLocale>
 #include <gluon/kgl/kglview.h>
 BlokItem::BlokItem(float w, float h,KGLEngine * parent)
-        :KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
+        :KGLPhysicsItem(parent,KGLPhysicsItem::PolygonShape)
 {
     createBox(w,h);
     setZIndex(LAYER_MIDDLE);
