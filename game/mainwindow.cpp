@@ -44,7 +44,13 @@ void Mainwindow::loadLevel(const QString &fileName)
     delete m_engine;
     m_engine = new BlokEngine;
     view()->setEngine(m_engine);
- m_engine->m_nbNormalBlock++;
+    m_engine->m_nbNormalBlock++;
+
+    QString wallpaperTexture, groundTexture;
+    in >> wallpaperTexture >> groundTexture;
+    m_engine->setBackGround(wallpaperTexture);
+    m_engine->setGround(groundTexture);
+
     while (!in.atEnd())
     {
         qreal x, y, width, height;
@@ -54,7 +60,7 @@ void Mainwindow::loadLevel(const QString &fileName)
         BlokItem *item = 0;
         if (texturePath.contains("normal_block")){
             item = new NormalBlok;
-        m_engine->m_nbNormalBlock++;
+            m_engine->m_nbNormalBlock++;
         }
         if (texturePath.contains("solid_block"))
             item = new SolidBlok;
@@ -73,6 +79,7 @@ void Mainwindow::loadLevel(const QString &fileName)
     }
     file.close();
     view()->updateGL();
+    kDebug() << "Playing: " << KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/sober.ogg";
     m_engine->setMusic(KGlobal::dirs()->findResourceDir("appdata", "data/sounds/") + "data/sounds/sober.ogg");
 
     view()->start();

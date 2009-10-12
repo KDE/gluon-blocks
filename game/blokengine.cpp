@@ -8,6 +8,7 @@
 BlokEngine::BlokEngine(KGLPhysicsEngine * parent)
     : KGLPhysicsEngine(parent)
 {
+    KALEngine::instance();
     m_ambianceSound = new KALSound();
 
     QRect screenDim = QApplication::desktop()->screenGeometry();
@@ -67,8 +68,8 @@ void BlokEngine::init()
 
     addItem(m_backGround);
     addItem(m_ground);
-    setBackGround(spritesResourceDir + "sky_wallpaper.png");
-    setGround(spritesResourceDir + "green_ground.png");
+//    setBackGround(spritesResourceDir + "sky_wallpaper.png");
+//    setGround(spritesResourceDir + "green_ground.png");
 
 
     addItem(m_wallLeft);

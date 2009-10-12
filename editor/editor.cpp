@@ -78,6 +78,14 @@ void Editor::openFile()
     QDataStream in(&file);
 
     newFile();
+
+    QString wallpaperTexture, groundTexture;
+    in >> wallpaperTexture >> groundTexture;
+
+    m_editorView->setWallpaperTexture(wallpaperTexture);
+    m_editorView->setGroundTexture(groundTexture);
+
+    KGLPhysicsEngine *engine = qobject_cast<KGLPhysicsEngine *>(m_editorView->engine());
     while (!in.atEnd())
     {
         qreal x, y, width, height;
@@ -88,7 +96,7 @@ void Editor::openFile()
         item->setTexture(texturePath);
         item->setPosition(x, y);
         item->updateTransform();
-        qobject_cast<KGLPhysicsEngine*>(m_editorView->engine())->addItem(item);
+        engine->addItem(item);
     }
     file.close();
 
@@ -114,6 +122,9 @@ void Editor::saveFileAs(const QString &outputFileName)
     file.open();
 
     QDataStream out(&file);
+
+    out << m_editorView->wallpaperTexture();
+    out << m_editorView->groundTexture();
 
     BlockItem *blockItem;
     foreach (KGLItemList itemList, m_editorView->engine()->items().values())

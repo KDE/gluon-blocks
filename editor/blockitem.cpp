@@ -43,4 +43,5 @@ void BlockItem::paintGL()
     glEnd();
 
     glPopMatrix();
+    glLineWidth(1);
 }

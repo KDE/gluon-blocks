@@ -34,6 +34,8 @@ public:
     void setGroundTexture(QString path);
     void setItemSize(const QSizeF& size);
     void removeBlock(BlockItem * item);
+    QString wallpaperTexture() { return m_wallpaperTexture; }
+    QString groundTexture() { return m_groundTexture; }
 public slots:
     void enableGrid(int enabled);
     void updateGridSize(int size);
@@ -57,6 +59,7 @@ private:
     bool m_grid;
     int m_gridSize;
     double m_ratio;
+    QPointF m_deltaMove;
 };
 
 #endif // BLOCKENGINE_H

@@ -105,13 +105,13 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_moving)
     {
-        QPointF newPos = mapToGL(event->pos()-m_selectedItem->center());
+        QPointF newPos = mapToGL(event->pos());
         if (m_grid)
         {
             newPos /= m_gridSize;
-            newPos = newPos.toPoint() * m_gridSize;
+            newPos = newPos.toPoint() * m_gridSize + m_selectedItem->center()+m_deltaMove;
         }
-        m_selectedItem->setPosition(newPos);
+        m_selectedItem->setPosition(newPos-m_selectedItem->center()-m_deltaMove);
         m_selectedItem->updateTransform();
         m_engine->world()->DestroyBody(m_selectedItem->body());
         m_selectedItem->setup(m_engine->world());
@@ -139,18 +139,19 @@ void EditorView::mousePressEvent(QMouseEvent *event)
         if (newSelectedItem)
         {
             m_moving = true;
+            m_deltaMove = pos-newSelectedItem->viewCenter();
         }
         else
         {
             BlockItem *item = new BlockItem(1, 1);
             item->setTexture(m_currentBlockTexture);
-            QPointF position = mapToGL(event->pos()-item->center());
+            QPointF position = mapToGL(event->pos());
             if (m_grid)
             {
                 position /= m_gridSize;
-                position = position.toPoint() * m_gridSize;
+                position = position.toPoint() * m_gridSize + item->center();
             }
-            item->setPosition(position);
+            item->setPosition(position-item->center());
             item->updateTransform();
             m_engine->addItem(item);
             m_blockList.append(item);
@@ -188,6 +189,8 @@ void EditorView::setItemSize(const QSizeF& size)
         m_selectedItem->resize(size.width(), size.height());
         m_selectedItem->texture()->setScale(size.width(), size.height());
         m_selectedItem->setColor(QColor(255, 255, 255, 100));
+        m_engine->world()->DestroyBody(m_selectedItem->body());
+        m_selectedItem->setup(m_engine->world());
         updateGL();
     }
 }
