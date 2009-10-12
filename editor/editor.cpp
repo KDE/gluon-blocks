@@ -26,11 +26,6 @@ Editor::Editor(QWidget * parent)
     setupActions();
 
     newFile();
-
-//    connect(m_optionsDock, SIGNAL(itemTextureChanged(QString)), m_editorView, SLOT(setItemTexture(QString)));
-//    connect(m_optionsDock, SIGNAL(wallpaperTextureChanged(QString)), m_editorView, SLOT(setWallpaperTexture(QString)));
-//    connect(m_optionsDock, SIGNAL(groundTextureChanged(QString)), m_editorView, SLOT(setGroundTexture(QString)));
-//    connect(m_editorView , SIGNAL(updateProperties(const QMap<QString, QWidget *>&)), m_optionsDock, SLOT(updateProperties(const QMap<QString, QWidget *>&)));
 }
 
 void Editor::setupActions()
@@ -66,7 +61,7 @@ void Editor::newFile()
     m_currentFile.clear();
     m_editorView->setWallpaperTexture(m_optionsDock->wallpaperTexturePath());
     m_editorView->setGroundTexture(m_optionsDock->groundTexturePath());
-m_optionsDock->refreshList();
+    m_optionsDock->refreshList();
 }
 
 void Editor::openFile()
@@ -97,7 +92,9 @@ void Editor::openFile()
         item->setPosition(x, y);
         item->updateTransform();
         engine->addItem(item);
+        m_editorView->blockList().append(item);
     }
+    m_optionsDock->refreshList();
     file.close();
 
     m_currentFile = fileNameFromDialog;

@@ -108,6 +108,7 @@ OptionsDock::OptionsDock(EditorView * view,QWidget * parent)
     connect(gridCheckBox, SIGNAL(stateChanged(int)), m_editorView, SLOT(enableGrid(int)));
     connect(gridSizeSlider, SIGNAL(valueChanged(int)), m_editorView, SLOT(updateGridSize(int)));
 }
+
 OptionsDock::~OptionsDock()
 {
     delete m_propertiesTableWidget;
@@ -148,40 +149,20 @@ void OptionsDock::setupCombo()
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "solid_block.png")),"solid",QVariant(spritePath + "solid_block.png"));
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "chimic_block.png")),"chimic",QVariant(spritePath + "chimic_block.png"));
     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "explode_block.png")),"explode",QVariant(spritePath + "explode_block.png"));
-     m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "totem1_block.png")),"totem",QVariant(spritePath + "totem1_block.png"));
-
-
-//    //--------insert Totem block
-//
-//QDir totemDir (KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/");
-//
-//    foreach (QString file, totemDir.entryList())
-//    {
-//        if (file.contains("totem"))
-//        {
-// KIcon icon(QPixmap(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/" + file));
-//            m_itemTypeCombo->addItem(icon,file, QVariant(KGlobal::dirs()->findResourceDir("appdata", "data/sprites/") + "data/sprites/" + file));
-//        }
-//    }
-
-
-
-
+    m_itemTypeCombo->addItem(KIcon(QPixmap(spritePath + "totem1_block.png")),"totem",QVariant(spritePath + "totem1_block.png"));
 }
+
 void OptionsDock::setupPropertyTable()
 {
     QDoubleSpinBox * spinW = new QDoubleSpinBox;
     QDoubleSpinBox * spinH = new QDoubleSpinBox;
-    QCheckBox * staticCBox = new QCheckBox;
     spinW->setMinimum(1);
     spinH->setMinimum(1);
     insertPropertyWidget("width",spinH);
     insertPropertyWidget("height",spinW);
-    insertPropertyWidget("static", staticCBox);
 
     connect(spinH,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)), Qt::QueuedConnection);
     connect(spinW,SIGNAL(valueChanged(double)),this,SLOT(setCurrentItemProperty(double)), Qt::QueuedConnection);
-    connect(staticCBox,SIGNAL(stateChanged(int)),this,SLOT(staticChanged(int)), Qt::QueuedConnection);
 }
 
 void OptionsDock::setCurrentItemTexture(int index)
@@ -212,24 +193,25 @@ void OptionsDock::refreshList()
         ++id;
     }
 }
+
 void OptionsDock::insertPropertyWidget(const QString& name, QWidget * widget)
 {
-
     int lastRow = m_propertiesTableWidget->rowCount()-1 ;
     m_propertiesTableWidget->setItem(lastRow,0,new QTableWidgetItem(name));
     m_propertiesTableWidget->setCellWidget(lastRow,1,widget);
     m_propertiesTableWidget->insertRow(lastRow+1);
 }
+
 QWidget * OptionsDock::propertyWidget(const QString& name)
 {
     for ( int row = 0; row<m_propertiesTableWidget->rowCount(); ++row)
     {
         if ( m_propertiesTableWidget->item(row,0)->text() == name)
             return m_propertiesTableWidget->cellWidget(row,1);
-
     }
     return 0;
 }
+
 void OptionsDock::setCurrentItemProperty(double value)
 {
     Q_UNUSED(value);
@@ -239,18 +221,8 @@ void OptionsDock::setCurrentItemProperty(double value)
     m_editorView->setItemSize(QSizeF(w,h));
 }
 
-void OptionsDock::staticChanged(int value)
-{
-    if (m_editorView->selectedItem())
-    {
-        kDebug() << "Mudando estatic para " << value << " == " << Qt::Checked;
-        m_editorView->selectedItem()->setStatic((value == Qt::Checked) ? true:false);
-    }
-}
-
 void OptionsDock::removeItem()
 {
-
     int index=m_blokListWidget->currentRow();
     if ( index!=-1)
     {
@@ -258,6 +230,7 @@ void OptionsDock::removeItem()
         refreshList();
     }
 }
+
 void OptionsDock::setSelectedItem(int id)
 {
     m_blokListWidget->setCurrentRow(id);

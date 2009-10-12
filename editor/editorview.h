@@ -17,7 +17,7 @@ public:
     EditorView(QWidget * parent = 0);
     ~EditorView();
     void initEngine();
-    QList <BlockItem*> blockList(){
+    QList <BlockItem*> & blockList(){
         return m_blockList;
         }
     BlockItem * selectedItem(){
