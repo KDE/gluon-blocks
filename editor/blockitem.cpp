@@ -3,7 +3,7 @@
 #include <gluon/kgl/kglphysicsengine.h>
 
 BlockItem::BlockItem(float w, float h,KGLPhysicsEngine* parent)
-: KGLPhysicsItem(KGLPhysicsItem::PolygonShape,parent)
+: KGLPhysicsItem(parent,KGLPhysicsItem::PolygonShape)
 {
     resize(w,h);
 }
