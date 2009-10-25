@@ -54,10 +54,11 @@ private:
     KALSound * m_removeCLickSound;
     KGLPhysicsItem * m_wallLeft;
     KGLPhysicsItem * m_wallRight;
-     KGLPhysicsItem * m_wallTop;
-     QList <BlokItem*> m_blokList;
+    KGLPhysicsItem * m_wallTop;
+    QList <BlokItem*> m_blokList;
 
-
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 #endif // BLOKENGINE_H
