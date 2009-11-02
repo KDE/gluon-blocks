@@ -1,6 +1,7 @@
 #include "blokengine.h"
 #include <gluon/kgl/kglview.h>
 #include <KLocale>
+#include <KDebug>
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>

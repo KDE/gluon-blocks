@@ -35,7 +35,8 @@ void BlokItem::paintGL()
     if ( objectName() != "TOTEM_BLOCK")
     {
         glPushMatrix();
-        glLoadMatrixd(matrix().data());
+
+        glLoadMatrixf(matrix().data());
         glEnable( GL_LINE_SMOOTH );
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
         glEnable(GL_BLEND);

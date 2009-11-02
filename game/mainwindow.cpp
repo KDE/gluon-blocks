@@ -2,6 +2,7 @@
 
 #include <KLocale>
 #include <KFileDialog>
+#include <KDebug>
 
 Mainwindow::Mainwindow(QWidget * parent)
     : GluonMainWindow(parent)
