@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gui name="blok" version="1.0" xmlns="http://www.kde.org/standards/kxmlgui/1.0"
+<gui name="blocks" version="1.0" xmlns="http://www.kde.org/standards/kxmlgui/1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0
      http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd">
 <MenuBar>
     <Menu name="blokToolBar">
-	<text>Blok</text>
+	<text>Blocks</text>
 	<Action name="loadLevel"/>
 	<Action name="loadLevels"/>
     </Menu>
 </MenuBar>
 <ToolBar name="mainToolBar">
-    <text>Blok Toolbar</text>
+    <text>Blocks Toolbar</text>
     <Action name="loadLevel"/>
     <Action name="loadLevels"/>
 </ToolBar>
